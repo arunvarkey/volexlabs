@@ -1,65 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volex Radio AI</title>
+    <title>Volex Labs | Intelligence Architected</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #050507;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent-cyan: #00f2ff;
+            --accent-purple: #bd00ff;
+            --accent-green: #00ff9d;
+            --text-main: #ffffff;
+            --text-muted: #8888aa;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f0f1f;
-            color: #ffffff;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
         }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
+
+        /* Background Gradient Mesh */
+        .ambient-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background:
+                radial-gradient(circle at 15% 50%, rgba(189, 0, 255, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 242, 255, 0.08), transparent 25%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            padding-bottom: 5rem;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            margin-bottom: 4rem;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.05em;
+            background: linear-gradient(90deg, #fff, #aaa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        p {
-            font-size: 1.2rem;
-            color: #a0a0ff;
-            max-width: 600px;
-            margin-bottom: 2rem;
-        }
-        .btn {
-            background-color: #00C9FF;
-            color: #000;
-            padding: 15px 30px;
-            border-radius: 30px;
+
+        .nav-links a {
+            color: var(--text-muted);
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: transform 0.2s;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            transition: color 0.3s;
         }
-        .btn:hover {
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 6rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            display: block;
+            background: linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: black;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button:hover {
             transform: scale(1.05);
-            background-color: #92FE9D;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
         }
+
+        /* Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(2, 300px);
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Glow Effects */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Card Content */
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Grid Spans */
+        .span-8 {
+            grid-column: span 8;
+        }
+
+        .span-4 {
+            grid-column: span 4;
+        }
+
+        .span-6 {
+            grid-column: span 6;
+        }
+
+        /* Specific Card Styles */
+        .fintech-icon {
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+        }
+
+        .media-icon {
+            background: rgba(189, 0, 255, 0.1);
+            color: var(--accent-purple);
+            box-shadow: 0 0 20px rgba(189, 0, 255, 0.2);
+        }
+
+        .intel-icon {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+        }
+
+        .data-icon {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Footer */
         footer {
-            margin-top: 3rem;
-            font-size: 0.8rem;
-            color: #555;
+            margin-top: 5rem;
+            border-top: 1px solid var(--card-border);
+            width: 100%;
+            padding: 3rem 0;
+            text-align: center;
+            color: #444;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #444;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+
+            .span-8,
+            .span-4,
+            .span-6 {
+                grid-column: span 1;
+            }
+
+            .card {
+                min-height: 250px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
+
 <body>
-    <h1>Volex Radio AI</h1>
-    <p>The smartest AI-powered radio experience. Listen to global stations with futuristic intelligence.</p>
-    
-    <a href="#" class="btn">Download on Google Play</a>
+
+    <div class="ambient-light"></div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">VOLEX LABS</div>
+            <div class="nav-links">
+                <a href="#">OneOS</a>
+                <a href="#">Research</a>
+                <a href="#">Careers</a>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <h1>
+                <span>Accelerating Humanity</span>
+                <span>with Intelligent Software.</span>
+            </h1>
+            <p>
+                Volex Labs builds the infrastructure for the next generation of finance, media, and autonomous
+                enterprise systems.
+            </p>
+            <a href="#" class="cta-button">Explore Ecosystem</a>
+        </section>
+
+        <section class="bento-grid">
+            <!-- Card 1: FinTech (Large) -->
+            <div class="card span-8">
+                <div>
+                    <div class="card-icon fintech-icon">⚡</div>
+                    <h3>Volex FinTech</h3>
+                    <p>High-frequency algorithmic trading powered by deep reinforcement learning. Our models process
+                        market data in nanoseconds to identify alpha before it emerges.</p>
+                </div>
+                <div
+                    style="margin-top: 2rem; height: 100px; background: linear-gradient(90deg, transparent, rgba(0,255,157,0.1), transparent); border-radius: 12px;">
+                </div>
+            </div>
+
+            <!-- Card 2: Media -->
+            <div class="card span-4">
+                <div class="card-icon media-icon">🎵</div>
+                <h3>Volex Media</h3>
+                <p>Generative audio and sensory experiences. The Volex Radio AI engine curates global culture into a
+                    seamless, intelligent stream.</p>
+            </div>
+
+            <!-- Card 3: Intelligence -->
+            <div class="card span-6">
+                <div class="card-icon intel-icon">🧠</div>
+                <h3>Volex Intelligence</h3>
+                <p>Next-generation large language models (LLMs) specialized for predictive analytics and behavioral
+                    modeling.</p>
+            </div>
+
+            <!-- Card 4: Data -->
+            <div class="card span-6">
+                <div class="card-icon data-icon">📊</div>
+                <h3>Volex Data</h3>
+                <p>Real-time data ingestion pipelines capable of handling petabytes of sensory and financial inputs
+                    daily.</p>
+            </div>
+        </section>
+    </div>
 
     <footer>
-        &copy; 2026 Volex Labs. All rights reserved. <br>
-        <a href="app-ads.txt" style="color: #555;">AdMob Verification</a>
+        <p>&copy; 2026 Volex Labs Inc. San Francisco, CA. All rights reserved.</p>
+        <p><a href="app-ads.txt">AdMob Verification</a></p>
     </footer>
+
+    <script>
+        // Mouse movement effect for glass cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.onmousemove = e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            }
+        });
+    </script>
+
 </body>
+
 </html>

@@ -8,18 +8,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #050507;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --accent-cyan: #00f2ff;
-            --accent-purple: #bd00ff;
-            --accent-green: #00ff9d;
+            /* More vibrant, deep blue/purple base instead of pitch black */
+            --bg-color: #0a0e17;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            /* Slightly lighter glass */
+            --card-border: rgba(255, 255, 255, 0.15);
+            --accent-cyan: #22d3ee;
+            --accent-purple: #c084fc;
+            --accent-green: #4ade80;
+            --accent-orange: #fb923c;
+            /* Added for cheerfulness */
             --text-main: #ffffff;
-            --text-muted: #8888aa;
+            --text-muted: #94a3b8;
         }
 
         body {
             background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 10% 20%, #1e1b4b 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, #111827 0%, transparent 40%);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -30,18 +37,59 @@
             align-items: center;
         }
 
-        /* Background Gradient Mesh */
-        .ambient-light {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background:
-                radial-gradient(circle at 15% 50%, rgba(189, 0, 255, 0.08), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(0, 242, 255, 0.08), transparent 25%);
+        /* Large Ambient Orbs for Cheerfulness */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
             z-index: -1;
-            pointer-events: none;
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: #4f46e5;
+        }
+
+        .orb-2 {
+            bottom: 10%;
+            right: -10%;
+            width: 40vw;
+            height: 40vw;
+            background: #7c3aed;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            top: 40%;
+            left: 30%;
+            width: 30vw;
+            height: 30vw;
+            background: #06b6d4;
+            opacity: 0.2;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
         }
 
         /* Container */
@@ -59,145 +107,175 @@
             align-items: center;
             padding: 2rem 0;
             margin-bottom: 4rem;
+            opacity: 0;
+            /* Hidden initially for animation */
+            animation: slideDown 0.8s ease-out forwards;
         }
 
         .logo {
             font-weight: 800;
             font-size: 1.5rem;
-            letter-spacing: -0.05em;
-            background: linear-gradient(90deg, #fff, #aaa);
+            letter-spacing: -0.02em;
+            background: linear-gradient(90deg, #fff, #cbd5e1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            cursor: pointer;
         }
 
         .nav-links a {
             color: var(--text-muted);
             text-decoration: none;
             margin-left: 2rem;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 500;
             transition: color 0.3s;
+            cursor: pointer;
         }
 
         .nav-links a:hover {
             color: var(--text-main);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         /* Hero Section */
         .hero {
             text-align: center;
-            margin-bottom: 6rem;
-            animation: fadeIn 1.5s ease-out;
+            margin-bottom: 8rem;
+            opacity: 0;
+            /* Managed by JS/CSS animation */
+            animation: clientFadeIn 1s ease-out forwards 0.3s;
         }
 
         .hero h1 {
-            font-size: 4.5rem;
-            line-height: 1.1;
+            font-size: 5rem;
+            line-height: 1.05;
             margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
+            font-weight: 800;
         }
 
         .hero h1 span {
             display: block;
-            background: linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%);
+            background: linear-gradient(135deg, white 0%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
+        /* Dynamic Hero Gradient Text */
+        .hero h1 .highlight {
+            background: linear-gradient(90deg, #22d3ee, #818cf8, #c084fc);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 5s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+
         .hero p {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
+            max-width: 650px;
+            margin: 0 auto 3rem;
             line-height: 1.6;
         }
 
         .cta-button {
             display: inline-block;
-            padding: 1rem 2.5rem;
-            background: white;
-            color: black;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.4);
         }
 
         /* Bento Grid */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: repeat(2, 300px);
+            grid-template-rows: auto;
             gap: 1.5rem;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 2.5rem;
+            border-radius: 32px;
+            /* Softer, rounder corners */
+            padding: 3rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            min-height: 320px;
+
+            /* Scroll Animation Initial State */
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        /* Glow Effects */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-        }
-
-        .card:hover::before {
-            opacity: 1;
+            transform: translateY(-8px) scale(1.01);
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         /* Card Content */
         .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
         }
 
         .card p {
             color: var(--text-muted);
-            font-size: 1rem;
-            line-height: 1.5;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         /* Grid Spans */
@@ -213,73 +291,129 @@
             grid-column: span 6;
         }
 
-        /* Specific Card Styles */
+        /* Specific Card Styles with clearer colors */
         .fintech-icon {
-            background: rgba(0, 255, 157, 0.1);
-            color: var(--accent-green);
-            box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 197, 94, 0.2));
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
         }
 
         .media-icon {
-            background: rgba(189, 0, 255, 0.1);
-            color: var(--accent-purple);
-            box-shadow: 0 0 20px rgba(189, 0, 255, 0.2);
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.2), rgba(168, 85, 247, 0.2));
+            color: #c084fc;
+            border: 1px solid rgba(192, 132, 252, 0.3);
         }
 
         .intel-icon {
-            background: rgba(0, 242, 255, 0.1);
-            color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(6, 182, 212, 0.2));
+            color: #22d3ee;
+            border: 1px solid rgba(34, 211, 238, 0.3);
         }
 
         .data-icon {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(249, 115, 22, 0.2));
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
         }
 
         /* Footer */
         footer {
-            margin-top: 5rem;
+            margin-top: 8rem;
             border-top: 1px solid var(--card-border);
             width: 100%;
-            padding: 3rem 0;
+            padding: 4rem 0;
             text-align: center;
-            color: #444;
-            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         footer a {
-            color: #444;
+            color: var(--text-muted);
             text-decoration: none;
+            transition: color 0.2s;
         }
 
         footer a:hover {
-            color: #666;
+            color: var(--text-main);
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            .hero h1 {
-                font-size: 3rem;
+        /* Modal Styles (Same as before but refined) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 23, 0.85);
+            /* Darker overlay for contrast */
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: linear-gradient(160deg, #1e1b4b, #0f172a);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 650px;
+            max-width: 90%;
+            padding: 3.5rem;
+            border-radius: 32px;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Keyframes */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
             }
 
-            .bento-grid {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto;
-            }
-
-            .span-8,
-            .span-4,
-            .span-6 {
-                grid-column: span 1;
-            }
-
-            .card {
-                min-height: 250px;
+            to {
+                transform: translateY(0);
+                opacity: 1;
             }
         }
 
-        @keyframes fadeIn {
+        @keyframes clientFadeIn {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -290,93 +424,178 @@
                 transform: translateY(0);
             }
         }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .span-8,
+            .span-4,
+            .span-6 {
+                grid-column: span 1;
+            }
+
+            .card {
+                min-height: auto;
+                aspect-ratio: auto;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="ambient-light"></div>
+    <!-- Ambient Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
 
     <div class="container">
         <nav>
             <div class="logo">VOLEX LABS</div>
             <div class="nav-links">
-                <a href="#">OneOS</a>
-                <a href="#">Research</a>
-                <a href="#">Careers</a>
+                <a onclick="scrollToSection('hero')">OneOS</a>
+                <a onclick="scrollToSection('grid')">Research</a>
+                <a href="#">About</a>
             </div>
         </nav>
 
-        <section class="hero">
+        <section class="hero" id="hero">
             <h1>
-                <span>Accelerating Humanity</span>
-                <span>with Intelligent Software.</span>
+                <span>Building the</span>
+                <span class="highlight">Intelligence Layer.</span>
             </h1>
             <p>
-                Volex Labs builds the infrastructure for the next generation of finance, media, and autonomous
-                enterprise systems.
+                From generative audio to high-frequency autonomous trading. <br>
+                We architect systems that think, adapt, and outperform.
             </p>
-            <a href="#" class="cta-button">Explore Ecosystem</a>
+            <a onclick="scrollToSection('grid')" class="cta-button">Check the Ecosystem</a>
         </section>
 
-        <section class="bento-grid">
-            <!-- Card 1: FinTech (Large) -->
-            <div class="card span-8">
+        <section class="bento-grid" id="grid">
+            <!-- Card 1: FinTech -->
+            <div class="card span-8" onclick="openModal('fintech')">
                 <div>
                     <div class="card-icon fintech-icon">⚡</div>
                     <h3>Volex FinTech</h3>
-                    <p>High-frequency algorithmic trading powered by deep reinforcement learning. Our models process
-                        market data in nanoseconds to identify alpha before it emerges.</p>
+                    <p>High-frequency algorithmic trading powered by deep reinforcement learning. Precision where it
+                        matters most.</p>
                 </div>
+                <!-- Abstract Graph Visual -->
                 <div
-                    style="margin-top: 2rem; height: 100px; background: linear-gradient(90deg, transparent, rgba(0,255,157,0.1), transparent); border-radius: 12px;">
+                    style="margin-top: 2rem; height: 120px; background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.1), transparent); border-radius: 16px; border: 1px dashed rgba(74, 222, 128, 0.2); display: flex; align-items: center; justify-content: center;">
+                    <span style="color: #4ade80; font-size: 0.9rem; font-weight: 600;">+24.8% Alpha Generated</span>
                 </div>
             </div>
 
             <!-- Card 2: Media -->
-            <div class="card span-4">
+            <div class="card span-4" onclick="openModal('media')">
                 <div class="card-icon media-icon">🎵</div>
                 <h3>Volex Media</h3>
-                <p>Generative audio and sensory experiences. The Volex Radio AI engine curates global culture into a
-                    seamless, intelligent stream.</p>
+                <p>Generative audio and sensory experiences. The radio that listens to you.</p>
             </div>
 
             <!-- Card 3: Intelligence -->
-            <div class="card span-6">
+            <div class="card span-6" onclick="openModal('intel')">
                 <div class="card-icon intel-icon">🧠</div>
                 <h3>Volex Intelligence</h3>
-                <p>Next-generation large language models (LLMs) specialized for predictive analytics and behavioral
-                    modeling.</p>
+                <p>Proprietary LLMs optimized for real-time predictive analytics and market sentiment.</p>
             </div>
 
             <!-- Card 4: Data -->
-            <div class="card span-6">
+            <div class="card span-6" onclick="openModal('data')">
                 <div class="card-icon data-icon">📊</div>
                 <h3>Volex Data</h3>
-                <p>Real-time data ingestion pipelines capable of handling petabytes of sensory and financial inputs
-                    daily.</p>
+                <p>Ingesting petabytes of structured market and sensory data daily.</p>
             </div>
         </section>
     </div>
 
     <footer>
         <p>&copy; 2026 Volex Labs Inc. San Francisco, CA. All rights reserved.</p>
-        <p><a href="app-ads.txt">AdMob Verification</a></p>
+        <p><a href="app-ads.txt" style="opacity: 0.5;">AdMob Link</a></p>
     </footer>
 
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal(event)">×</button>
+            <h2 class="modal-title" id="modalTitle" style="color: white; font-size: 2.2rem; margin-bottom: 1rem;">Title
+            </h2>
+            <div class="modal-body" id="modalBody" style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.7;">Content
+            </div>
+            <br><br>
+            <a href="#" class="cta-button" style="padding: 1rem 2rem; font-size: 1rem;">View Documentation</a>
+        </div>
+    </div>
+
     <script>
-        // Mouse movement effect for glass cards
-        document.querySelectorAll('.card').forEach(card => {
-            card.onmousemove = e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
+        // Data for modals
+        const modalData = {
+            fintech: {
+                title: "Volex FinTech",
+                body: "Our proprietary high-frequency trading engine leverages deep reinforcement learning to identify micro-patterns in global markets. We provide institutional-grade liquidity and execution strategies.<br><br><strong>Key Features:</strong><br>• Sub-millisecond latency<br>• Predictive alpha generation<br>• Automated risk management"
+            },
+            media: {
+                title: "Volex Media",
+                body: "Redefining broadcasting with AI. Volex Radio AI isn't just a player; it's a dynamic content curator that understands listener intent and context.<br><br><strong>Capabilities:</strong><br>• Real-time audio synthesis<br>• Cross-border station aggregation<br>• Semantic music analysis"
+            },
+            intel: {
+                title: "Volex Intelligence",
+                body: "The core of our ecosystem. OneOS Intelligence is a cohesive AI layer that powers both our financial models and media recommendations.<br><br>We are building the first general-purpose operating system for autonomous agents."
+            },
+            data: {
+                title: "Volex Data",
+                body: "Data is the fuel of intelligence. Our global network ingests, cleans, and normalizes petabytes of structured and unstructured data daily to train the next generation of models."
             }
+        };
+
+        // Modal Functions
+        function openModal(type) {
+            const data = modalData[type];
+            if (!data) return;
+
+            document.getElementById('modalTitle').innerHTML = data.title;
+            document.getElementById('modalBody').innerHTML = data.body;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal(e) {
+            if (e.target.id === 'modalOverlay' || e.target.classList.contains('close-btn')) {
+                document.getElementById('modalOverlay').classList.remove('active');
+            }
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 100}ms`; // Stagger effect
+            observer.observe(card);
         });
     </script>
-
 </body>
 
 </html>

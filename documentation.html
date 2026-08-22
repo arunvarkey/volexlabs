@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volex Terminal - Documentation</title>
+    <title>Volex - Documentation</title>
     <style>
         :root {
             --bg-color: #0c0c0c;
@@ -87,23 +87,70 @@
                 <p>Learn how we handle your data securely.</p>
             </a>
 
-            <!-- Placeholder for Terms -->
-            <a href="#" class="card" onclick="alert('Coming soon!')">
+            <!-- Terms of service -->
+            <a href="#terms" class="card">
                 <h3>Terms of Service</h3>
-                <p>User agreement and conditions.</p>
+                <p>User agreement, engineering disclaimer and limits of liability.</p>
             </a>
 
-            <!-- Placeholder for User Manual -->
-            <a href="#" class="card" onclick="alert('User Manual is being updated.')">
-                <h3>User Manual</h3>
-                <p>Complete guide to using Volex Terminal.</p>
+            <!-- User guide — lives in the app, where it stays in step with it -->
+            <a href="https://app.volexlabs.com/#docs" class="card">
+                <h3>User Guide</h3>
+                <p>Calculation types, inputs, outputs and worked examples.</p>
             </a>
 
             <!-- Support Link -->
-            <a href="mailto:support@volexterminal.com" class="card">
+            <a href="mailto:support@volexlabs.com" class="card">
                 <h3>Support</h3>
                 <p>Contact our support team.</p>
             </a>
+        </div>
+
+        <div id="terms" style="text-align:left;max-width:760px;margin:56px auto 0;
+             border-top:1px solid #333;padding-top:32px;line-height:1.7;color:#aaa;
+             font-size:0.92rem;">
+            <h2 style="color:#fff;font-size:1.3rem;">Terms of Service</h2>
+
+            <h3 style="color:var(--accent-color);font-size:1rem;margin-top:24px;">1. What Volex is</h3>
+            <p>Volex is structural calculation software. It performs the code checks
+            named in each result and reports them with their clause references and
+            derivations.</p>
+
+            <h3 style="color:var(--accent-color);font-size:1rem;margin-top:24px;">2. Engineering disclaimer</h3>
+            <p><strong style="color:#fff;">Volex does not replace independent checking
+            by a chartered engineer, nor professional indemnity sign-off.</strong>
+            The engineer issuing any calculation produced with this software remains
+            responsible for the design, for the suitability of the inputs, for the
+            load cases and combinations selected, and for any check not performed.</p>
+            <p>Only the checks printed in a result have been performed. The absence
+            of a check is not a statement that it is satisfied. Inputs, load cases,
+            support conditions and material grades are as supplied by the user and
+            are not independently verified.</p>
+            <p>Validation cases compare Volex against published worked examples within
+            their stated tolerance bands. That is evidence of agreement with those
+            examples. It is not proof of correctness for your design.</p>
+
+            <h3 style="color:var(--accent-color);font-size:1rem;margin-top:24px;">3. Your account</h3>
+            <p>You are responsible for keeping your credentials secure and for the
+            calculations run under your account. Do not share an account between
+            engineers — the audit trail records which account produced each result.</p>
+
+            <h3 style="color:var(--accent-color);font-size:1rem;margin-top:24px;">4. Records and reproducibility</h3>
+            <p>Every calculation is version-stamped with the physics engine that
+            produced it, so a result can be reproduced later. Calculation records are
+            retained as described in the <a href="/volex-fintec/privacy.html"
+            style="color:var(--accent-color);">privacy policy</a>.</p>
+
+            <h3 style="color:var(--accent-color);font-size:1rem;margin-top:24px;">5. Availability and changes</h3>
+            <p>The service is provided as-is. Calculation modules are corrected as
+            defects are found; corrections are recorded in the changelog, and a
+            corrected module may produce a different result from the same inputs.
+            Where a correction changes a previously issued result, it is your
+            responsibility as the issuing engineer to review affected designs.</p>
+
+            <h3 style="color:var(--accent-color);font-size:1rem;margin-top:24px;">6. Contact</h3>
+            <p><a href="mailto:support@volexlabs.com"
+            style="color:var(--accent-color);">support@volexlabs.com</a></p>
         </div>
 
         <div class="footer">&copy; 2026 Volex Labs.</div>

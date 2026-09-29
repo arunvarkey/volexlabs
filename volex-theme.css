@@ -13,9 +13,7 @@
    is actually made — it skips in CI, and that limitation is stated there too.
 
    Do not edit below. Edit the original, then copy it here.
-   ───────────────────────────────────────────────────────────────────────────── */
-
-/* ═══════════════════════════════════════════════════════════════════════════
+   ───────────────────────────────────────────────────────────────────────────── *//* ═══════════════════════════════════════════════════════════════════════════
    VOLEX FORGE — DESIGN SYSTEM (Phase 1: Global Visual Style)
    The ONE canonical token source for every page (home, Studio, marketplace,
    landing, admin). Rules of the system:
@@ -90,6 +88,14 @@
   --vf-font:      'Inter', system-ui, -apple-system, sans-serif;
   --vf-mono:      'IBM Plex Mono', ui-monospace, monospace;
   --vf-logo:      'Space Grotesk', var(--vf-font);
+  /* The face for HEADINGS, which is a different question from the face for the
+     wordmark. In the product it is Inter, so a panel heading sits in the same
+     family as the labels under it and nothing shouts. The cinematic tier
+     overrides it to Space Grotesk, because a marketing page's job is display
+     type and 109 landing pages were already setting that family by hand —
+     as a bare 'Space Grotesk' with no fallback, so a failed font load dropped
+     them to the browser default rather than to Inter. */
+  --vf-display:   var(--vf-font);
   --vf-w-title:   600;          /* titles: medium/semibold */
   --vf-w-label:   400;          /* labels: regular */
   --vf-w-value:   500;          /* values: slightly heavier */
@@ -174,7 +180,7 @@ html[data-vf-theme="cinematic"] {
    visitor actually notices: volexlabs.com and app.volexlabs.com now agree.
    ─────────────────────────────────────────────────────────────────────────── */
 html[data-vf-theme="cinematic"] {
-  /* SIX VALUES, and the list is exhaustive on purpose. --vf-muted, --vf-faint,
+  /* A SHORT LIST, and it is exhaustive on purpose. --vf-muted, --vf-faint,
      --vf-border, --vf-subtle, --vf-accent and the four status colours are NOT
      here: this selector is named alongside the dark one above, so it already
      has them, from the single definition that both tiers read. Adding one back
@@ -188,6 +194,11 @@ html[data-vf-theme="cinematic"] {
   /* Corners nearly square. The tier's one structural difference, and the reason
      it is a tier rather than a second dark theme. */
   --vf-r-sm: 2px;  --vf-r-md: 3px;  --vf-r-lg: 4px;
+
+  /* Display type. Space Grotesk is the wordmark face in the product and nothing
+     else; here it also carries the headings, which is what separates a page
+     that argues from a panel that reports. */
+  --vf-display:   'Space Grotesk', var(--vf-font);
 }
 
 /* ── Base ─────────────────────────────────────────────────────────────────── */

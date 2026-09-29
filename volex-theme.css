@@ -229,3 +229,46 @@ button, a, input, select { transition: background-color .13s, border-color .13s,
 
 /* Projects gallery — cards lift subtly on hover (spec §5: motion, no layout jump) */
 .vf-proj-card:hover { border-color: var(--vf-accent) !important; transform: translateY(-2px); }
+
+/* ── ACTIONS ──────────────────────────────────────────────────────────────────
+   One filled action per group, and a status colour is never a fill.
+
+   THE RULE THIS EXISTS TO ENFORCE, in this file's own words further up: green
+   is not an accent, it is the VERIFIED semantic, reserved. Studio was filling
+   its .btn-primary with --vf-verified and putting it on "Run FEA" and on the
+   yearly upgrade button — a button that STARTS an analysis and a button that
+   takes a payment, both wearing the one colour that means "this was checked".
+   Neither has checked anything at the moment it is pressed.
+
+   Three levels, and they differ by EMPHASIS rather than by hue, which is what
+   lets a group show a recommended option without inventing a second brand
+   colour:
+
+     .vf-act            filled accent      one per group, the thing to do
+     .vf-act-2          accent outline     a real alternative beside it
+     .vf-act-quiet      text only          everything else
+
+   The fill is --vf-accent-btn, not --vf-accent, for the reason given where
+   those tokens are defined: white on the bright accent is 3.19:1 in either
+   theme. Both are the same accent; only one of them can carry ink.
+
+   A destructive action takes .vf-act-danger, which is an OUTLINE, not a fill.
+   A red button is easy to press by accident and the colour should warn rather
+   than invite.
+   ─────────────────────────────────────────────────────────────────────────── */
+.vf-act, .vf-act-2, .vf-act-quiet, .vf-act-danger {
+  font: inherit; font-weight: var(--vf-w-title); cursor: pointer;
+  border-radius: var(--vf-r-md); padding: 10px 16px;
+  border: 1px solid transparent;
+  transition: background-color .13s, border-color .13s, color .13s;
+}
+.vf-act          { background: var(--vf-accent-btn); color: var(--vf-accent-ink); }
+.vf-act:hover:not(:disabled)    { background: var(--vf-accent-deep); }
+.vf-act-2        { background: transparent; color: var(--vf-accent); border-color: var(--vf-accent); }
+.vf-act-2:hover:not(:disabled)  { background: color-mix(in srgb, var(--vf-accent) 12%, transparent); }
+.vf-act-quiet    { background: transparent; color: var(--vf-muted); }
+.vf-act-quiet:hover:not(:disabled) { color: var(--vf-fg); background: var(--vf-raised); }
+.vf-act-danger   { background: transparent; color: var(--vf-danger); border-color: var(--vf-danger); }
+.vf-act-danger:hover:not(:disabled) { background: color-mix(in srgb, var(--vf-danger) 12%, transparent); }
+.vf-act:disabled, .vf-act-2:disabled,
+.vf-act-quiet:disabled, .vf-act-danger:disabled { opacity: .45; cursor: not-allowed; }

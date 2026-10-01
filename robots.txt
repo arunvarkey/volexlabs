@@ -1,0 +1,32 @@
+# volexlabs.com — the apex. Two pages, and they are both meant to be found.
+#
+# This file did not exist. Neither did sitemap.xml, while OWNER_ACTION_LIST.md
+# named "https://volexlabs.com/sitemap.xml" as the PRIORITY submission to Google
+# Search Console — a URL that would have returned 404.
+
+User-agent: *
+Allow: /
+
+# AI assistants and answer engines are welcome: an engineer asking a model about
+# Eurocode checks should be able to find the worked example on this page.
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+# The legacy fintech app's files are still in this repository because app-ads.txt
+# carries a live AdMob publisher ID and the privacy page may be a store-listed
+# URL. Neither belongs in search results for an engineering product.
+Disallow: /volex-fintec/
+
+Sitemap: https://volexlabs.com/sitemap.xml

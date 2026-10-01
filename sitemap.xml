@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Two pages, which is what this site actually serves. A sitemap listing URLs
+     that are not live is worse than none: Google fetches each one, gets a 404,
+     and learns the site is unreliable. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://volexlabs.com/</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://volexlabs.com/documentation.html</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

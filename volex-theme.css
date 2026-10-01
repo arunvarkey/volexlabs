@@ -113,33 +113,102 @@
    cascade into a sibling attribute selector, so a cinematic block written on its
    own would have had to restate all nine — and a restated value is a copy that
    is only right until somebody fixes the original. */
-html[data-vf-theme="dark"],
-html[data-vf-theme="cinematic"] {
-  /* ── Neutral base (charcoal) ──────────────────────────────────────────── */
-  --vf-bg:        #08090a;
-  --vf-card:      #0e1011;
-  --vf-raised:    #141618;
-  --vf-input:     #141618;
-  --vf-fg:        #f7f8f8;
-  --vf-muted:     #9ca2a8;
+/* ── The dark palette, defined ONCE ───────────────────────────────────────────
+   These are the values; the blocks below only MAP them. There are two places a
+   page can ask for dark — the data-vf-theme attribute, and the operating
+   system's own setting on a page that has no attribute at all — and until now
+   only the first existed, which is why the 17 server-rendered backend routes
+   could not follow a reader's choice: their only mechanism was a script, and
+   those pages block scripts by policy.
+   Adding the second must not duplicate a palette. The note pinned in
+   test_page_shell.py said exactly that: "costs a duplicated token block, which
+   is the drift this whole system exists to remove — unless the dark values are
+   restructured so one block serves both." This is the restructure. A corrected
+   value is corrected in one place, and the two mapping blocks are asserted
+   identical by a gate rather than by anyone remembering.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --vf-d-bg:        #08090a;
+  --vf-d-card:      #0e1011;
+  --vf-d-raised:    #141618;
+  --vf-d-fg:        #f7f8f8;
+  --vf-d-muted:     #9ca2a8;
   /* Was #5c6166 — 3.05:1 on a card. #828990 measures 5.63:1 on --vf-bg,
      5.39:1 on a card, 5.12:1 on a raised surface. */
-  --vf-faint:     #828990;
-  --vf-border:    #1f2224;
-  --vf-subtle:    #2a2e31;
-
-  /* The bright CAD blue comes back as text — 6.23:1 on --vf-bg, 5.97:1 on a
-     card. --vf-accent-btn is deliberately NOT overridden: white on this blue
-     is 3.2:1, so a filled button keeps the deeper value in dark mode too. */
-  --vf-accent:    #4d8dff;
-  /* These four were all chosen against charcoal, which is why they measure
-     well here and failed on paper. The light block above holds the darker
-     values; the originals come back for dark mode.
+  --vf-d-faint:     #828990;
+  --vf-d-border:    #1f2224;
+  --vf-d-subtle:    #2a2e31;
+  /* The bright CAD blue as TEXT — 6.23:1 on --vf-bg, 5.97:1 on a card.
+     --vf-accent-btn is deliberately not among these: white on this blue is
+     3.2:1, so a filled button keeps the deeper value in dark mode too. */
+  --vf-d-accent:    #4d8dff;
+  /* Chosen against charcoal, which is why they measure well here and failed on
+     paper. The light :root holds the darker values.
        verified 9.98:1 · warn 9.24:1 · danger 4.87:1 · chip-4 7.54:1  */
-  --vf-verified:  #3ecf8e;
-  --vf-warn:      #e8a33d;
-  --vf-danger:    #f87171;
-  --vf-chip-4:    #c084fc;
+  --vf-d-verified:  #3ecf8e;
+  --vf-d-warn:      #e8a33d;
+  --vf-d-danger:    #f87171;
+  --vf-d-chip-4:    #c084fc;
+  --vf-d-cat-1:     #0d9488;
+  --vf-d-cat-2:     #c026d3;
+  --vf-d-cat-3:     #65a30d;
+  --vf-d-cat-4:     #7c3aed;
+  --vf-d-cat-5:     #0891b2;
+}
+
+/* THE MAPPING. Byte-identical to the one inside the media query below, and a
+   gate compares them — two mappings that merely agree today are the same defect
+   waiting to come back. */
+html[data-vf-theme="dark"],
+html[data-vf-theme="cinematic"] {
+  --vf-bg:        var(--vf-d-bg);
+  --vf-card:      var(--vf-d-card);
+  --vf-raised:    var(--vf-d-raised);
+  --vf-input:     var(--vf-d-raised);
+  --vf-fg:        var(--vf-d-fg);
+  --vf-muted:     var(--vf-d-muted);
+  --vf-faint:     var(--vf-d-faint);
+  --vf-border:    var(--vf-d-border);
+  --vf-subtle:    var(--vf-d-subtle);
+  --vf-accent:    var(--vf-d-accent);
+  --vf-verified:  var(--vf-d-verified);
+  --vf-warn:      var(--vf-d-warn);
+  --vf-danger:    var(--vf-d-danger);
+  --vf-chip-4:    var(--vf-d-chip-4);
+  --vf-cat-1:     var(--vf-d-cat-1);
+  --vf-cat-2:     var(--vf-d-cat-2);
+  --vf-cat-3:     var(--vf-d-cat-3);
+  --vf-cat-4:     var(--vf-d-cat-4);
+  --vf-cat-5:     var(--vf-d-cat-5);
+}
+
+/* A PAGE WITH NO ATTRIBUTE FOLLOWS THE OPERATING SYSTEM. This is what the 17
+   server-rendered routes get: they set no attribute, cannot run a script, and
+   now still arrive dark for a reader whose machine is dark. Every page that
+   DOES set data-vf-theme is unaffected — :not([data-vf-theme]) excludes them,
+   so a reader who has chosen light in the app keeps light even on a dark OS. */
+@media (prefers-color-scheme: dark) {
+  html:not([data-vf-theme]) {
+    --vf-bg:        var(--vf-d-bg);
+    --vf-card:      var(--vf-d-card);
+    --vf-raised:    var(--vf-d-raised);
+    --vf-input:     var(--vf-d-raised);
+    --vf-fg:        var(--vf-d-fg);
+    --vf-muted:     var(--vf-d-muted);
+    --vf-faint:     var(--vf-d-faint);
+    --vf-border:    var(--vf-d-border);
+    --vf-subtle:    var(--vf-d-subtle);
+    --vf-accent:    var(--vf-d-accent);
+    --vf-verified:  var(--vf-d-verified);
+    --vf-warn:      var(--vf-d-warn);
+    --vf-danger:    var(--vf-d-danger);
+    --vf-chip-4:    var(--vf-d-chip-4);
+    --vf-cat-1:     var(--vf-d-cat-1);
+    --vf-cat-2:     var(--vf-d-cat-2);
+    --vf-cat-3:     var(--vf-d-cat-3);
+    --vf-cat-4:     var(--vf-d-cat-4);
+    --vf-cat-5:     var(--vf-d-cat-5);
+  }
 }
 
 /* ── The cinematic tier ───────────────────────────────────────────────────────
@@ -320,12 +389,4 @@ button, a, input, select { transition: background-color .13s, border-color .13s,
   --vf-cat-4:     #6d28d9;   /* concrete     */
   --vf-cat-5:     #0891b2;   /* geotechnical */
   --vf-cat-none:  var(--vf-muted);   /* actions & loading — not a material */
-}
-html[data-vf-theme="dark"],
-html[data-vf-theme="cinematic"] {
-  --vf-cat-1:     #0d9488;
-  --vf-cat-2:     #c026d3;
-  --vf-cat-3:     #65a30d;
-  --vf-cat-4:     #7c3aed;
-  --vf-cat-5:     #0891b2;
 }

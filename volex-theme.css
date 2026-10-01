@@ -1,0 +1,331 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   A COPY. The original is volex-forge-frontend/public/volex-theme.css and it is
+   the only place to change anything below this header.
+
+   volexlabs.com is a separate deployment on the apex domain, so it cannot link
+   the app's stylesheet without making the company's front door depend on the
+   app's host being up. That is the only reason this duplicate exists.
+
+   It is gated: `the apex copy of the theme is byte-identical to the original` in
+   volex-forge-frontend/tests/canonical-urls.spec.js compares everything after
+   this header against the original and fails on any drift. The gate runs in a
+   working checkout with both repositories side by side, which is where the copy
+   is actually made — it skips in CI, and that limitation is stated there too.
+
+   Do not edit below. Edit the original, then copy it here.
+   ───────────────────────────────────────────────────────────────────────────── *//* ═══════════════════════════════════════════════════════════════════════════
+   VOLEX FORGE — DESIGN SYSTEM (Phase 1: Global Visual Style)
+   The ONE canonical token source for every page (home, Studio, marketplace,
+   landing, admin). Rules of the system:
+   · ONE accent across the app: CAD blue (--vf-accent). Nothing else is brand.
+   · Green is NOT an accent — it is the VERIFIED/proof semantic, reserved.
+   · Amber = warning semantic, red = danger semantic. Semantics ≠ accents.
+   · Neutral base palette: white / grey / charcoal, both themes.
+   · One font family: Inter (UI) + IBM Plex Mono (values/code) + Space
+     Grotesk (logo only). Titles medium, labels regular, values heavier,
+     units light grey.
+   · Hairline separators only (--vf-border) — no heavy borders.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Neutral base (light) ─────────────────────────────────────────────── */
+  --vf-bg:        #f4f4f4;
+  --vf-card:      #ffffff;
+  --vf-raised:    #fafafa;
+  --vf-input:     #fafafa;
+  --vf-fg:        #111111;
+  --vf-muted:     #616770;
+  /* --vf-faint was #9aa0a6: 2.40:1 on --vf-bg. It is described below as the
+     colour for units, but units in an engineering tool are content — "mm",
+     "kN", "MPa" change what a number means — and the landing page uses it for
+     whole paragraphs besides. An axe run over both themes found it behind most
+     of 150 contrast failures. #61676d measures 5.20:1 on --vf-bg, 5.72:1 on a
+     card and 5.48:1 on a raised surface. Still clearly the quietest grey in
+     the palette, now a legible one. */
+  --vf-faint:     #61676d;
+  --vf-border:    #e0e0e0;
+  --vf-subtle:    #d0d0d0;
+
+  /* ── The one accent ───────────────────────────────────────────────────────
+     Still one accent — but it needs two values, because a colour that reads
+     well on charcoal does not read well on paper. The bright CAD blue scores
+     6.2:1 as text on the dark background and 2.9:1 on the light one, so the
+     light theme darkens it here and the dark theme puts the bright one back
+     further down.
+
+     --vf-accent-btn is the same accent used as a FILL. White on #4d8dff is
+     3.2:1 and fails AA in *either* theme, so filled buttons take the deeper
+     blue in both — that one is not a light-mode problem.
+
+     Measured, not eyeballed. #1d4ed8: 6.70:1 as text on white, 6.09:1 on
+     --vf-bg, and 6.70:1 for white sitting on it. AA wants 4.5:1.
+
+     It was #2563eb, which measured 4.70:1 on --vf-bg — passing, but with so
+     little headroom that every faintly tinted surface (the blue callouts, the
+     CTA panels) landed at 4.39-4.44 and failed. Darkening the token once fixed
+     the whole class instead of patching each tint. */
+  --vf-accent:       #1d4ed8;   /* light: accent as text, borders, rules */
+  --vf-accent-btn:   #1d4ed8;   /* both themes: accent as a fill under white text */
+  --vf-accent-deep:  #1a3ea8;   /* hover/pressed state of a filled accent */
+  --vf-accent-ink:   #ffffff;   /* text on accent fills */
+
+  /* ── Semantic status (reserved meanings, never decorative) ────────────── */
+  /* Like the accent, the verified green needs two values. #3ecf8e was chosen
+     against charcoal, where it is 9.98:1 — on white it is 2.00:1, so every
+     "VERIFIED" tag on the light landing page was unreadable. The bright value
+     comes back in the dark block below. */
+  --vf-verified:  #12794a;      /* proof passed / validated / owned — 5.44:1 on white */
+  --vf-warn:      #8a5a00;      /* caution / approximate — 5.60:1 on its pale tint */
+  --vf-danger:    #b91c1c;      /* failure / separation / decline — 5.94:1 on white */
+  /* Not a semantic, just the fourth chip colour on the landing page. It lived
+     as a hardcoded #c084fc, which is right on charcoal (7.54:1) and unreadable
+     on the pale light-mode tint (2.46:1). A hardcoded light value would have
+     been 2.05:1 in dark mode, so it has to be a token like the others. */
+  --vf-chip-4:    #7e22ce;      /* 6.51:1 on its pale tint */
+
+  /* ── Type scale ───────────────────────────────────────────────────────── */
+  --vf-font:      'Inter', system-ui, -apple-system, sans-serif;
+  --vf-mono:      'IBM Plex Mono', ui-monospace, monospace;
+  --vf-logo:      'Space Grotesk', var(--vf-font);
+  /* The face for HEADINGS, which is a different question from the face for the
+     wordmark. In the product it is Inter, so a panel heading sits in the same
+     family as the labels under it and nothing shouts. The cinematic tier
+     overrides it to Space Grotesk, because a marketing page's job is display
+     type and 109 landing pages were already setting that family by hand —
+     as a bare 'Space Grotesk' with no fallback, so a failed font load dropped
+     them to the browser default rather than to Inter. */
+  --vf-display:   var(--vf-font);
+  --vf-w-title:   600;          /* titles: medium/semibold */
+  --vf-w-label:   400;          /* labels: regular */
+  --vf-w-value:   500;          /* values: slightly heavier */
+
+  /* ── Space & shape ────────────────────────────────────────────────────── */
+  --vf-r-sm: 6px;  --vf-r-md: 8px;  --vf-r-lg: 12px;
+  --vf-gap-1: 6px; --vf-gap-2: 10px; --vf-gap-3: 16px; --vf-gap-4: 24px;
+  --vf-hairline: 1px solid var(--vf-border);
+}
+
+/* Two themes share this block, and the sharing is the point. The cinematic tier
+   below overrides six values and NOTHING else, so the greys, the accent and the
+   four status colours have exactly one definition between them. Listing both
+   selectors here is what makes that true: an attribute selector does not
+   cascade into a sibling attribute selector, so a cinematic block written on its
+   own would have had to restate all nine — and a restated value is a copy that
+   is only right until somebody fixes the original. */
+html[data-vf-theme="dark"],
+html[data-vf-theme="cinematic"] {
+  /* ── Neutral base (charcoal) ──────────────────────────────────────────── */
+  --vf-bg:        #08090a;
+  --vf-card:      #0e1011;
+  --vf-raised:    #141618;
+  --vf-input:     #141618;
+  --vf-fg:        #f7f8f8;
+  --vf-muted:     #9ca2a8;
+  /* Was #5c6166 — 3.05:1 on a card. #828990 measures 5.63:1 on --vf-bg,
+     5.39:1 on a card, 5.12:1 on a raised surface. */
+  --vf-faint:     #828990;
+  --vf-border:    #1f2224;
+  --vf-subtle:    #2a2e31;
+
+  /* The bright CAD blue comes back as text — 6.23:1 on --vf-bg, 5.97:1 on a
+     card. --vf-accent-btn is deliberately NOT overridden: white on this blue
+     is 3.2:1, so a filled button keeps the deeper value in dark mode too. */
+  --vf-accent:    #4d8dff;
+  /* These four were all chosen against charcoal, which is why they measure
+     well here and failed on paper. The light block above holds the darker
+     values; the originals come back for dark mode.
+       verified 9.98:1 · warn 9.24:1 · danger 4.87:1 · chip-4 7.54:1  */
+  --vf-verified:  #3ecf8e;
+  --vf-warn:      #e8a33d;
+  --vf-danger:    #f87171;
+  --vf-chip-4:    #c084fc;
+}
+
+/* ── The cinematic tier ───────────────────────────────────────────────────────
+   The THIRD face, for the pages that argue rather than report: volexlabs.com,
+   landing.html, sell.html. Set with html[data-vf-theme="cinematic"].
+
+   It exists because a marketing page and a calculation panel have different
+   jobs — deeper black, flatter surfaces, corners nearly square — and it lives
+   HERE, in the one token file, because the alternative is what this site
+   already had: five styling systems and a visitor who watches the brand change
+   between two clicks.
+
+   DERIVED FROM DARK ON PURPOSE, and only in the six places listed. Backgrounds
+   get darker, foreground gets brighter, and nothing else moves, so every text
+   ratio in this tier is provably at least the dark theme's own — no new colour
+   has been introduced that could quietly fail. Measured, both tiers:
+
+                    cinematic bg / card / raised      dark bg / card
+        --vf-fg           20.38   19.45   18.44          19.93   19.08
+        --vf-muted         7.91    7.55    7.16           7.73    7.40
+        --vf-faint         5.76    5.49    5.21           5.63    5.39
+        --vf-accent        6.38    6.09    5.77           6.23    5.97
+        --vf-verified     10.21    9.75    9.24           9.98    9.56
+        --vf-warn          9.45    9.02    8.55           9.24    8.85
+        --vf-danger        7.37    7.03    6.67           7.20    6.90
+
+   THE STATUS COLOURS ARE NOT DROPPED HERE, and that is a correction. The first
+   description of this tier said a marketing page "states no verdicts, so it
+   uses none of the status colours" — and the apex page's best element is a
+   worked EC3 example ending in `PASS — utilisation 0.375`. It states a verdict.
+   A tier that had removed the verified green would have forced that page to
+   hardcode one, which is exactly the drift this file exists to stop.
+
+   NOR DOES IT GET ITS OWN ACCENT. The page this tier was built for was amber
+   throughout — logo, headline highlight, clause references, step numbers. Amber
+   is the WARNING semantic in this system, and one accent across every surface is
+   the first rule here, so the accent stays CAD blue. That is the change a
+   visitor actually notices: volexlabs.com and app.volexlabs.com now agree.
+   ─────────────────────────────────────────────────────────────────────────── */
+html[data-vf-theme="cinematic"] {
+  /* A SHORT LIST, and it is exhaustive on purpose. --vf-muted, --vf-faint,
+     --vf-border, --vf-subtle, --vf-accent and the four status colours are NOT
+     here: this selector is named alongside the dark one above, so it already
+     has them, from the single definition that both tiers read. Adding one back
+     here would fork it. */
+  --vf-bg:        #050505;
+  --vf-card:      #0c0d0e;
+  --vf-raised:    #131415;
+  --vf-input:     #131415;
+  --vf-fg:        #ffffff;
+
+  /* Corners nearly square. The tier's one structural difference, and the reason
+     it is a tier rather than a second dark theme. */
+  --vf-r-sm: 2px;  --vf-r-md: 3px;  --vf-r-lg: 4px;
+
+  /* Display type. Space Grotesk is the wordmark face in the product and nothing
+     else; here it also carries the headings, which is what separates a page
+     that argues from a panel that reports. */
+  --vf-display:   'Space Grotesk', var(--vf-font);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+/* The body must be painted from the tokens, and this is the only place that
+   can be relied on to do it. Every page carried its own body background except
+   index.html — which meant the home page's body stayed at the browser default
+   white while the React app painted its own dark background inside #root. The
+   static SEO section lives OUTSIDE #root, so it sat on white while inheriting
+   the dark theme's --vf-fg (#f7f8f8): headings and <strong> at roughly 1.05:1,
+   i.e. invisible, and the body copy at 2.5:1.
+   Pages that want something else still override this — a page's own <style>
+   comes after this stylesheet in the cascade, so landing/privacy/404 keep
+   --ink and admin keeps #0a0a0a. This is the floor, not a mandate. */
+html, body { font-family: var(--vf-font); }
+body { background: var(--vf-bg); color: var(--vf-fg); }
+.vf-mono   { font-family: var(--vf-mono); }
+.vf-unit   { color: var(--vf-faint); font-weight: 300; }   /* units: light grey */
+
+/* Slim instrument scrollbars everywhere — fat grey bars break the panel look */
+* { scrollbar-width: thin; scrollbar-color: var(--vf-subtle) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--vf-border); border-radius: 99px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--vf-subtle); }
+
+/* Smooth, no-jump interactions (spec §5): colors/borders ease, layout doesn't */
+button, a, input, select { transition: background-color .13s, border-color .13s, color .13s; }
+
+/* Projects gallery — cards lift subtly on hover (spec §5: motion, no layout jump) */
+.vf-proj-card:hover { border-color: var(--vf-accent) !important; transform: translateY(-2px); }
+
+/* ── ACTIONS ──────────────────────────────────────────────────────────────────
+   One filled action per group, and a status colour is never a fill.
+
+   THE RULE THIS EXISTS TO ENFORCE, in this file's own words further up: green
+   is not an accent, it is the VERIFIED semantic, reserved. Studio was filling
+   its .btn-primary with --vf-verified and putting it on "Run FEA" and on the
+   yearly upgrade button — a button that STARTS an analysis and a button that
+   takes a payment, both wearing the one colour that means "this was checked".
+   Neither has checked anything at the moment it is pressed.
+
+   Three levels, and they differ by EMPHASIS rather than by hue, which is what
+   lets a group show a recommended option without inventing a second brand
+   colour:
+
+     .vf-act            filled accent      one per group, the thing to do
+     .vf-act-2          accent outline     a real alternative beside it
+     .vf-act-quiet      text only          everything else
+
+   The fill is --vf-accent-btn, not --vf-accent, for the reason given where
+   those tokens are defined: white on the bright accent is 3.19:1 in either
+   theme. Both are the same accent; only one of them can carry ink.
+
+   A destructive action takes .vf-act-danger, which is an OUTLINE, not a fill.
+   A red button is easy to press by accident and the colour should warn rather
+   than invite.
+   ─────────────────────────────────────────────────────────────────────────── */
+.vf-act, .vf-act-2, .vf-act-quiet, .vf-act-danger {
+  font: inherit; font-weight: var(--vf-w-title); cursor: pointer;
+  border-radius: var(--vf-r-md); padding: 10px 16px;
+  border: 1px solid transparent;
+  transition: background-color .13s, border-color .13s, color .13s;
+}
+.vf-act          { background: var(--vf-accent-btn); color: var(--vf-accent-ink); }
+.vf-act:hover:not(:disabled)    { background: var(--vf-accent-deep); }
+.vf-act-2        { background: transparent; color: var(--vf-accent); border-color: var(--vf-accent); }
+.vf-act-2:hover:not(:disabled)  { background: color-mix(in srgb, var(--vf-accent) 12%, transparent); }
+.vf-act-quiet    { background: transparent; color: var(--vf-muted); }
+.vf-act-quiet:hover:not(:disabled) { color: var(--vf-fg); background: var(--vf-raised); }
+.vf-act-danger   { background: transparent; color: var(--vf-danger); border-color: var(--vf-danger); }
+.vf-act-danger:hover:not(:disabled) { background: color-mix(in srgb, var(--vf-danger) 12%, transparent); }
+.vf-act:disabled, .vf-act-2:disabled,
+.vf-act-quiet:disabled, .vf-act-danger:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── CATEGORICAL: the discipline scale ────────────────────────────────────────
+   Identity, not magnitude and not status. Five hues in a FIXED ORDER plus a
+   neutral, for labelling which engineering discipline a thing belongs to.
+
+   WHY FIVE HUES AND NOT SIX, measured rather than argued. Anvil carried four
+   mutually inconsistent category maps built out of the status colours —
+   `seismic: var(--red)`, `rc_beam: var(--green)` — so a seismic check was
+   painted in the colour that means FAILURE and an RC beam in the colour that
+   means PROVEN. Replacing them needs a real categorical scale, and a real one
+   has a ceiling: with blue, green, amber and red already spoken for, the wheel
+   does not hold six more that anyone can tell apart. Every attempt collapsed
+   somewhere, and the numbers are the argument (OKLab ΔE ×100):
+
+       orange      vs --vf-warn      ΔE  0.5   indistinguishable
+       gold/bronze vs --vf-warn      ΔE  3.8   reads as a warning
+       teal        vs --vf-danger    ΔE  3.3   under protanopia
+       violet      vs --vf-accent    ΔE  0.3   under deuteranopia
+       cyan        vs teal           ΔE  6.9   siblings, so never adjacent
+       any deep sibling                        fails the lightness band
+
+   So colour does not carry identity here — the LABEL does, and every chip has
+   one. Colour reinforces it. That is also why the fixed order matters: the two
+   sibling pairs (cyan/teal, violet/magenta) are placed so they are never
+   neighbours, which is what the adjacent-pair check measures.
+
+   VALIDATED, not eyeballed, in both modes against --vf-bg:
+
+                        lightness  chroma  CVD(adjacent)  normal-vision  contrast
+       dark  #08090a      PASS      PASS    ΔE 12.8        ΔE 23.3        PASS
+       light #f4f4f4      PASS      PASS    ΔE 13.6        ΔE 24.9        PASS
+
+   And the safety check — no discipline may impersonate a verdict. Worst pair
+   against --vf-verified / --vf-warn / --vf-danger is ΔE 17.9, clear of the 15
+   floor for a full-colour reader. The lime-vs-amber pair sits at ΔE 5.5 under
+   protanopia, which is legal only because identity never rests on the colour.
+
+   The sixth slot is DELIBERATELY HUELESS. It carries actions and loading —
+   wind, seismic, fire, load take-down — which are not a material, so reading
+   as "no material" is correct rather than a compromise.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --vf-cat-1:     #0d9488;   /* steel        */
+  --vf-cat-2:     #a21caf;   /* masonry      */
+  --vf-cat-3:     #4d7c0f;   /* timber       */
+  --vf-cat-4:     #6d28d9;   /* concrete     */
+  --vf-cat-5:     #0891b2;   /* geotechnical */
+  --vf-cat-none:  var(--vf-muted);   /* actions & loading — not a material */
+}
+html[data-vf-theme="dark"],
+html[data-vf-theme="cinematic"] {
+  --vf-cat-1:     #0d9488;
+  --vf-cat-2:     #c026d3;
+  --vf-cat-3:     #65a30d;
+  --vf-cat-4:     #7c3aed;
+  --vf-cat-5:     #0891b2;
+}

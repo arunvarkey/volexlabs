@@ -1,113 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-vf-theme="cinematic">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volex Terminal - Documentation</title>
+    <title>Volex — Documentation and legal</title>
+    <meta name="description" content="Volex documentation index, terms of service and engineering disclaimer for the structural calculation and CAD geometry tools.">
+    <link rel="canonical" href="https://volexlabs.com/documentation.html"/>
+
+    <!-- A COPY of the one stylesheet, for the reason given in its own header.
+         This page carried the FIFTH styling system on this brand: a cyan accent
+         (#00e5ff) that appears nowhere else, on a background that is neither
+         theme's. A reader clicking "Documentation" from the footer of the home
+         page changed company. -->
+    <link rel="stylesheet" href="/volex-theme.css">
+
+    <script defer data-domain="volexlabs.com" src="https://plausible.io/js/script.js"></script>
     <style>
-        :root {
-            --bg-color: #0c0c0c;
-            --text-color: #e0e0e0;
-            --accent-color: #00e5ff;
-            --card-bg: #1a1a1a;
-        }
+        /* No tokens declared, no colour literals. Same shell as index.html so
+           the two pages are the same site. */
+        * { box-sizing: border-box; }
+        body { line-height: 1.6; margin: 0; -webkit-font-smoothing: antialiased; }
+        .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+        a { color: inherit; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 40px 20px;
-        }
+        header { border-bottom: var(--vf-hairline);
+                 background: color-mix(in srgb, var(--vf-bg) 88%, transparent);
+                 backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 50; }
+        .hdr { display: flex; align-items: center; justify-content: space-between;
+               padding: 14px 0; gap: 16px; }
+        .logo { font-family: var(--vf-logo); font-weight: 600; font-size: 18px;
+                letter-spacing: 1px; display: flex; align-items: center; gap: 9px;
+                text-decoration: none; }
+        .logo .mark { width: 22px; height: 22px; border: 2px solid var(--vf-accent);
+                      border-radius: var(--vf-r-sm); display: inline-block; position: relative; }
+        .logo .mark::after { content: ""; position: absolute; inset: 4px 3px auto 3px;
+                             height: 2px; background: var(--vf-accent); }
+        nav a { font-size: 14px; color: var(--vf-muted); text-decoration: none; margin-left: 22px; }
+        nav a:hover { color: var(--vf-fg); }
+        .btn { display: inline-block; background: var(--vf-accent-btn); color: var(--vf-accent-ink);
+               font-weight: 600; padding: 11px 22px; border-radius: var(--vf-r-md);
+               text-decoration: none; font-size: 15px; }
+        .btn:hover { background: var(--vf-accent-deep); }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
+        .page { padding: 56px 0 24px; }
+        .eyebrow { font-family: var(--vf-mono); font-size: 11px; color: var(--vf-faint);
+                   letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+        h1 { font-family: var(--vf-display); font-size: 34px; font-weight: 700; margin: 0 0 12px; letter-spacing: -0.8px; }
+        .lede { color: var(--vf-muted); max-width: 700px; margin: 0 0 32px; font-size: 17px; }
 
-        h1 {
-            color: var(--accent-color);
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            margin-bottom: 50px;
-        }
+        /* Capped at three columns. With five cards and no cap, a 1280px viewport
+           lays out four and leaves a single orphan on the second row. */
+        .grid { display: grid; gap: 18px; max-width: 900px;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        .card { background: var(--vf-card); padding: 22px; border-radius: var(--vf-r-lg);
+                border: var(--vf-hairline); text-decoration: none;
+                display: block; transition: border-color .13s, transform .13s; }
+        .card:hover { border-color: var(--vf-accent); transform: translateY(-2px); }
+        .card h3 { margin: 0 0 8px; font-size: 16px; font-weight: var(--vf-w-title); }
+        .card p { font-size: 14px; color: var(--vf-muted); margin: 0; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
+        .terms { border-top: var(--vf-hairline); margin-top: 56px; padding-top: 32px;
+                 max-width: 760px; line-height: 1.7; color: var(--vf-muted); font-size: 15px; }
+        .terms h2 { font-family: var(--vf-display); color: var(--vf-fg); font-size: 22px; font-weight: 700;
+                    margin: 0 0 8px; letter-spacing: -0.4px; }
+        .terms h3 { color: var(--vf-accent); font-size: 15px; margin: 28px 0 6px;
+                    font-weight: var(--vf-w-title); }
+        .terms strong { color: var(--vf-fg); font-weight: var(--vf-w-title); }
+        .terms a { color: var(--vf-accent); }
+        .terms .asof { font-family: var(--vf-mono); font-size: 12px; color: var(--vf-faint); }
 
-        .card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid #333;
-            transition: transform 0.2s, border-color 0.2s;
-            text-decoration: none;
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        footer { border-top: var(--vf-hairline); margin-top: 56px; padding: 32px 0 56px;
+                 color: var(--vf-faint); font-size: 14px; }
+        footer a { color: var(--vf-faint); text-decoration: none; }
+        footer a:hover { color: var(--vf-fg); }
+        footer .row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 14px; }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
-        }
-
-        .card h3 {
-            color: var(--accent-color);
-            margin-top: 0;
-        }
-
-        .card p {
-            font-size: 0.9rem;
-            color: #888;
-        }
-
-        .footer {
-            margin-top: 60px;
-            color: #666;
-            font-size: 0.8rem;
+        @media (max-width: 760px) {
+            h1 { font-size: 26px; }
+            .hdr nav { display: none; }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Documentation & Legal</h1>
 
-        <div class="grid">
-            <!-- Link to Privacy Policy -->
-            <a href="/volex-fintec/privacy.html" class="card">
-                <h3>Privacy Policy</h3>
-                <p>Learn how we handle your data securely.</p>
-            </a>
+<header>
+  <div class="wrap hdr">
+    <a class="logo" href="/"><span class="mark"></span>VOLEX</a>
+    <nav>
+      <a href="/#what">What it does</a>
+      <a href="/#mechanical">Mechanical</a>
+      <a href="/#standards">Standards</a>
+      <a href="/#verification">Verification</a>
+    </nav>
+    <a class="btn" href="https://app.volexlabs.com">Open the app</a>
+  </div>
+</header>
 
-            <!-- Placeholder for Terms -->
-            <a href="#" class="card" onclick="alert('Coming soon!')">
-                <h3>Terms of Service</h3>
-                <p>User agreement and conditions.</p>
-            </a>
+<div class="wrap page">
+  <div class="eyebrow">Documentation and legal</div>
+  <h1>What is written down, and where it lives</h1>
+  <p class="lede">
+    The user guide sits inside the app, because that is the only place it stays
+    in step with the build it documents. Everything that has to be stable — the
+    terms, the disclaimer, the privacy policy — is here.
+  </p>
 
-            <!-- Placeholder for User Manual -->
-            <a href="#" class="card" onclick="alert('User Manual is being updated.')">
-                <h3>User Manual</h3>
-                <p>Complete guide to using Volex Terminal.</p>
-            </a>
+  <div class="grid">
+    <a href="/volex-fintec/privacy.html" class="card">
+      <h3>Privacy policy</h3>
+      <p>What is stored, for how long, and who it is shared with.</p>
+    </a>
+    <a href="#terms" class="card">
+      <h3>Terms of service</h3>
+      <p>User agreement, engineering disclaimer and limits of liability.</p>
+    </a>
+    <a href="https://app.volexlabs.com/#docs" class="card">
+      <h3>User guide</h3>
+      <p>Calculation types, inputs, outputs and worked examples.</p>
+    </a>
+    <a href="https://app.volexlabs.com/#changelog" class="card">
+      <h3>Changelog</h3>
+      <p>Corrections to calculation modules, in the order they were made.</p>
+    </a>
+    <a href="mailto:support@volexlabs.com" class="card">
+      <h3>Support</h3>
+      <p>Email, answered within two working days.</p>
+    </a>
+  </div>
 
-            <!-- Support Link -->
-            <a href="mailto:support@volexterminal.com" class="card">
-                <h3>Support</h3>
-                <p>Contact our support team.</p>
-            </a>
-        </div>
+  <div id="terms" class="terms">
+    <h2>Terms of service</h2>
+    <p class="asof">Somerton, United Kingdom · &copy; 2026 Volex</p>
 
-        <div class="footer">&copy; 2026 Volex Labs.</div>
+    <h3>1. What Volex is</h3>
+    <p>Volex is engineering software in two parts. <strong>Anvil</strong> is
+    structural calculation software: it performs the code checks named in each
+    result and reports them with their clause references and derivations.
+    <strong>Forge</strong> is geometry software: it produces solid models and
+    manufacturing files from a description, computes ISO 286 limits and fits
+    where a fit is named, and runs a finite element pass over the resulting
+    geometry.</p>
+
+    <h3>2. Engineering disclaimer</h3>
+    <p><strong>Volex does not replace independent checking by a chartered
+    engineer, nor professional indemnity sign-off.</strong>
+    The engineer issuing any calculation produced with this software remains
+    responsible for the design, for the suitability of the inputs, for the
+    load cases and combinations selected, and for any check not performed.</p>
+    <p>Only the checks printed in a result have been performed. The absence
+    of a check is not a statement that it is satisfied. Inputs, load cases,
+    support conditions and material grades are as supplied by the user and
+    are not independently verified.</p>
+    <p>Validation cases compare Volex against published worked examples within
+    their stated tolerance bands. That is evidence of agreement with those
+    examples. It is not proof of correctness for your design.</p>
+
+    <h3>3. Geometry, fits and the finite element pass</h3>
+    <p><strong>Forge's finite element pass is not a strength check.</strong> It
+    reports where a model works hardest and returns no rating, no safety factor
+    and no pass or fail. A linear-elastic peak at a bolt hole reaches yield on
+    connections that are fully compliant, so its output must not be presented as
+    a verdict on a design.</p>
+    <p>ISO 286 fits named in a prompt are computed from the published tables. A
+    full tolerance stack-up across a chain of mating parts is not performed, and
+    no geometric tolerancing — true position, flatness, perpendicularity, runout
+    — is applied, checked or exported. Manufacturability notes cover printability
+    and machinability only; there is no mould-flow, draft or sink-mark analysis.
+    Standard-part geometry is modelled to the nominal dimensions given, is not
+    built from certified tables, and carries no load rating. Responsibility for
+    checking a model against the drawing and the standard before it is
+    manufactured rests with the user.</p>
+
+    <h3>4. Your account</h3>
+    <p>You are responsible for keeping your credentials secure and for the
+    calculations run under your account. Do not share an account between
+    engineers — the audit trail records which account produced each result.</p>
+
+    <h3>5. Records and reproducibility</h3>
+    <p>Every calculation is version-stamped with the engine that produced it, so
+    a result can be reproduced later. Calculation records are retained as
+    described in the <a href="/volex-fintec/privacy.html">privacy policy</a>.</p>
+
+    <h3>6. Availability and changes</h3>
+    <p>The service is provided as-is. Calculation modules are corrected as
+    defects are found; corrections are recorded in the changelog, and a
+    corrected module may produce a different result from the same inputs.
+    Where a correction changes a previously issued result, it is your
+    responsibility as the issuing engineer to review affected designs.</p>
+
+    <h3>7. Contact</h3>
+    <p>Volex is built and run by Arun Varkey, working independently in Somerton,
+    United Kingdom. Contact by email at
+    <a href="mailto:support@volexlabs.com">support@volexlabs.com</a>.
+    <!-- Same gap as the home page footer: "Somerton, UK" is not an address at
+         which service of documents is effective. See the note in index.html. --></p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <a href="/">Home</a>
+      <a href="/#standards">Standards implemented</a>
+      <a href="/#verification">Verification evidence</a>
+      <a href="/volex-fintec/privacy.html">Privacy policy</a>
+      <a href="mailto:support@volexlabs.com">support@volexlabs.com</a>
     </div>
+    <div>&copy; 2026 Volex. Somerton, United Kingdom.</div>
+  </div>
+</footer>
+
 </body>
 
 </html>

@@ -1,530 +1,424 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-vf-theme="cinematic">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="ArvZYRdjfBx4EPA4m7GVfXDo628Qu1znv6hDejhxsR0" />
-    <title>Volex Labs | Intelligence Architected</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Volex — Structural and mechanical calculations, with the working shown</title>
+    <meta name="description" content="Eurocode structural calculations with full clause-referenced derivations and a sign-off PDF, and text-to-CAD parts with ISO 286 fits and an FEA cross-check. Every module checked against published worked examples.">
+    <link rel="canonical" href="https://volexlabs.com/"/>
+
+    <!-- THE ONE STYLESHEET. This is a byte-identical copy of
+         volex-forge-frontend/public/volex-theme.css, not a second design system:
+         volexlabs.com is its own deployment on the apex domain, so linking the
+         app's host would make the company's front door depend on the app being
+         up. The copy is gated — canonical-urls.spec.js compares the two files
+         and fails on any drift. Change the original, then copy it here. -->
+    <link rel="stylesheet" href="/volex-theme.css">
+
+    <!-- The cinematic tier is pinned on <html> rather than read from storage.
+         This page has no reader preference to honour: nobody has an account
+         here, and a marketing page that rendered light for one visitor and dark
+         for the next would not be one design. -->
+
+    <script defer data-domain="volexlabs.com" src="https://plausible.io/js/script.js"></script>
     <style>
-        :root {
-            /* More vibrant, deep blue/purple base instead of pitch black */
-            --bg-color: #0a0e17;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            /* Slightly lighter glass */
-            --card-border: rgba(255, 255, 255, 0.15);
-            --accent-cyan: #22d3ee;
-            --accent-purple: #c084fc;
-            --accent-green: #4ade80;
-            --accent-orange: #fb923c;
-            /* Added for cheerfulness */
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-        }
-        body {
-            background-color: var(--bg-color);
-            background-image:
-                radial-gradient(circle at 10% 20%, #1e1b4b 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, #111827 0%, transparent 40%);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        /* Large Ambient Orbs for Cheerfulness */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: -1;
-            opacity: 0.4;
-            animation: float 20s infinite ease-in-out;
-        }
-        .orb-1 {
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: #4f46e5;
-        }
-        .orb-2 {
-            bottom: 10%;
-            right: -10%;
-            width: 40vw;
-            height: 40vw;
-            background: #7c3aed;
-            animation-delay: -5s;
-        }
-        .orb-3 {
-            top: 40%;
-            left: 30%;
-            width: 30vw;
-            height: 30vw;
-            background: #06b6d4;
-            opacity: 0.2;
-            animation-delay: -10s;
-        }
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) scale(1);
-            }
-            33% {
-                transform: translate(30px, -50px) scale(1.1);
-            }
-            66% {
-                transform: translate(-20px, 20px) scale(0.9);
-            }
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-        }
-        /* Container */
-        .container {
-            max-width: 1200px;
-            width: 90%;
-            margin: 0 auto;
-            padding-bottom: 5rem;
-        }
-        /* Navigation */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 0;
-            margin-bottom: 4rem;
-            opacity: 0;
-            /* Hidden initially for animation */
-            animation: slideDown 0.8s ease-out forwards;
-        }
-        .logo {
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: -0.02em;
-            background: linear-gradient(90deg, #fff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: pointer;
-        }
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 2rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-        .nav-links a:hover {
-            color: var(--text-main);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            margin-bottom: 8rem;
-            opacity: 0;
-            /* Managed by JS/CSS animation */
-            animation: clientFadeIn 1s ease-out forwards 0.3s;
-        }
-        .hero h1 {
-            font-size: 5rem;
-            line-height: 1.05;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
-            font-weight: 800;
-        }
-        .hero h1 span {
-            display: block;
-            background: linear-gradient(135deg, white 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        /* Dynamic Hero Gradient Text */
-        .hero h1 .highlight {
-            background: linear-gradient(90deg, #22d3ee, #818cf8, #c084fc);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientMove 5s linear infinite;
-        }
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 200% 50%;
-            }
-        }
-        .hero p {
-            font-size: 1.35rem;
-            color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto 3rem;
-            line-height: 1.6;
-        }
-        .cta-button {
-            display: inline-block;
-            padding: 1.2rem 3rem;
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .cta-button:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.4);
-        }
-        /* Bento Grid */
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: auto;
-            gap: 1.5rem;
-        }
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 32px;
-            /* Softer, rounder corners */
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(20px);
-            cursor: pointer;
-            min-height: 320px;
-            /* Scroll Animation Initial State */
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .card:hover {
-            transform: translateY(-8px) scale(1.01);
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-        /* Card Content */
-        .card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.8rem;
-            font-weight: 700;
-        }
-        .card p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-        .card-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.6rem;
-            transition: transform 0.3s;
-        }
-        .card:hover .card-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-        /* Grid Spans */
-        .span-8 {
-            grid-column: span 8;
-        }
-        .span-4 {
-            grid-column: span 4;
-        }
-        .span-6 {
-            grid-column: span 6;
-        }
-        /* Specific Card Styles with clearer colors */
-        .fintech-icon {
-            background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 197, 94, 0.2));
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.3);
-        }
-        .media-icon {
-            background: linear-gradient(135deg, rgba(192, 132, 252, 0.2), rgba(168, 85, 247, 0.2));
-            color: #c084fc;
-            border: 1px solid rgba(192, 132, 252, 0.3);
-        }
-        .intel-icon {
-            background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(6, 182, 212, 0.2));
-            color: #22d3ee;
-            border: 1px solid rgba(34, 211, 238, 0.3);
-        }
-        .data-icon {
-            background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(249, 115, 22, 0.2));
-            color: #fb923c;
-            border: 1px solid rgba(251, 146, 60, 0.3);
-        }
+        /* NO TOKENS ARE DECLARED HERE, and no colour literal appears below.
+           Every value comes from volex-theme.css. The page this replaced carried
+           thirteen of its own — including an amber that was this site's whole
+           identity while meaning "warning" everywhere else in the product. */
+        * { box-sizing: border-box; }
+        body { line-height: 1.6; margin: 0; -webkit-font-smoothing: antialiased; }
+        .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+        a { color: inherit; }
+
+        /* Header */
+        header { border-bottom: var(--vf-hairline);
+                 background: color-mix(in srgb, var(--vf-bg) 88%, transparent);
+                 backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 50; }
+        .hdr { display: flex; align-items: center; justify-content: space-between;
+               padding: 14px 0; gap: 16px; }
+        .logo { font-family: var(--vf-logo); font-weight: 600; font-size: 18px;
+                letter-spacing: 1px; display: flex; align-items: center; gap: 9px; }
+        .logo .mark { width: 22px; height: 22px; border: 2px solid var(--vf-accent);
+                      border-radius: var(--vf-r-sm); display: inline-block; position: relative; }
+        .logo .mark::after { content: ""; position: absolute; inset: 4px 3px auto 3px;
+                             height: 2px; background: var(--vf-accent); }
+        nav a { font-size: 14px; color: var(--vf-muted); text-decoration: none; margin-left: 22px; }
+        nav a:hover { color: var(--vf-fg); }
+        .btn { display: inline-block; background: var(--vf-accent-btn); color: var(--vf-accent-ink);
+               font-weight: 600; padding: 11px 22px; border-radius: var(--vf-r-md);
+               text-decoration: none; font-size: 15px; }
+        .btn:hover { background: var(--vf-accent-deep); }
+        .btn.ghost { background: transparent; color: var(--vf-fg);
+                     border: var(--vf-hairline); font-weight: 500; }
+        .btn.ghost:hover { background: var(--vf-raised); border-color: var(--vf-subtle); }
+
+        /* Hero */
+        .hero { padding: 72px 0 44px; text-align: center; }
+        .eyebrow { font-family: var(--vf-mono); font-size: 11px; color: var(--vf-faint);
+                   letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+        h1 { font-family: var(--vf-display); font-size: 46px; line-height: 1.12; font-weight: 700; margin: 0 0 20px;
+             letter-spacing: -1.2px; }
+        h1 .hl { color: var(--vf-accent); }
+        .lede { font-size: 18px; color: var(--vf-muted); max-width: 640px;
+                margin: 0 auto 30px; }
+        .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .sub { font-family: var(--vf-mono); font-size: 11px; color: var(--vf-faint); margin-top: 14px; }
+
+        /* Worked example */
+        .example { background: var(--vf-card); border: var(--vf-hairline);
+                   border-radius: var(--vf-r-lg); overflow: hidden; max-width: 720px;
+                   margin: 40px auto 0; text-align: left; }
+        .example .bar { display: flex; justify-content: space-between; padding: 10px 16px;
+                        background: var(--vf-raised); border-bottom: var(--vf-hairline);
+                        font-family: var(--vf-mono); font-size: 11px; letter-spacing: 1.4px;
+                        color: var(--vf-faint); }
+        .example .bar .clause { color: var(--vf-accent); letter-spacing: 0; }
+        .example .q { padding: 14px 16px; border-bottom: var(--vf-hairline);
+                      font-family: var(--vf-mono); font-size: 13px; }
+        .example .q .caret { color: var(--vf-accent); margin-right: 8px; }
+        .rows { padding: 16px; display: grid; grid-template-columns: auto 1fr auto;
+                gap: 6px 16px; font-family: var(--vf-mono); font-size: 13px;
+                font-variant-numeric: tabular-nums; }
+        .rows .k { color: var(--vf-faint); font-weight: var(--vf-w-label); }
+        .rows .v { font-weight: var(--vf-w-value); }
+        .rows .f { color: var(--vf-faint); text-align: right; }
+        .verdict { border-top: var(--vf-hairline); padding: 12px 16px;
+                   font-family: var(--vf-mono); font-size: 12px;
+                   display: flex; justify-content: space-between; align-items: center;
+                   gap: 12px; flex-wrap: wrap; }
+        /* Green is the reserved VERIFIED semantic in this system, and this is
+           what it is reserved FOR — a check that ran and passed. */
+        .pass { color: var(--vf-verified); font-weight: var(--vf-w-value); }
+        .gov { color: var(--vf-faint); }
+
+        /* Sections */
+        section { padding: 56px 0; border-top: var(--vf-hairline); }
+        h2 { font-family: var(--vf-display); font-size: 27px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.5px; }
+        .sec-lede { color: var(--vf-muted); max-width: 700px; margin: 0 0 30px; }
+        .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); }
+        .card { background: var(--vf-card); border: var(--vf-hairline);
+                border-radius: var(--vf-r-lg); padding: 22px; }
+        .card h3 { font-size: 16px; margin: 0 0 8px; font-weight: var(--vf-w-title); }
+        .card p { color: var(--vf-muted); font-size: 15px; margin: 0; }
+        .card .tag { font-family: var(--vf-mono); font-size: 11px; color: var(--vf-accent);
+                     letter-spacing: 1.2px; display: block; margin-bottom: 9px; }
+
+        /* Standards */
+        .codes { display: flex; flex-wrap: wrap; gap: 8px; }
+        .code { font-family: var(--vf-mono); font-size: 12px; padding: 6px 11px;
+                border: var(--vf-hairline); border-radius: var(--vf-r-sm); color: var(--vf-muted);
+                background: var(--vf-card); }
+        .codes h4 { width: 100%; font-family: var(--vf-mono); font-size: 11px;
+                    letter-spacing: 1.4px; text-transform: uppercase;
+                    color: var(--vf-faint); margin: 14px 0 0; font-weight: var(--vf-w-label); }
+        .codes h4:first-child { margin-top: 0; }
+
+        /* Steps */
+        ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0;
+                   display: grid; gap: 14px; }
+        ol.steps li { counter-increment: s; background: var(--vf-card);
+                      border: var(--vf-hairline); border-radius: var(--vf-r-lg);
+                      padding: 18px 20px 18px 58px; position: relative; }
+        ol.steps li::before { content: counter(s); position: absolute; left: 20px; top: 18px;
+                              font-family: var(--vf-mono); font-weight: var(--vf-w-value);
+                              color: var(--vf-accent); }
+        ol.steps strong { display: block; margin-bottom: 4px; font-weight: var(--vf-w-title); }
+        ol.steps span { color: var(--vf-muted); font-size: 15px; }
+
+        /* Limits box.
+           This is the one place on the page that takes the warning semantic, and
+           it takes it because it MEANS it: everything inside is a boundary on
+           what the software has proved. The old page was amber throughout, which
+           is how a semantic stops being one. */
+        .limits { background: color-mix(in srgb, var(--vf-warn) 8%, transparent);
+                  border: 1px solid var(--vf-warn); border-radius: var(--vf-r-lg);
+                  padding: 20px 22px; }
+        .limits h3 { margin: 0 0 10px; font-size: 15px; color: var(--vf-warn);
+                     font-family: var(--vf-mono); letter-spacing: 1px;
+                     font-weight: var(--vf-w-value); }
+        .limits ul { margin: 0; padding-left: 20px; color: var(--vf-muted); font-size: 15px; }
+        .limits li { margin-bottom: 7px; }
+        .limits li:last-child { margin-bottom: 0; }
+
         /* Footer */
-        footer {
-            margin-top: 8rem;
-            border-top: 1px solid var(--card-border);
-            width: 100%;
-            padding: 4rem 0;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-        footer a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        footer a:hover {
-            color: var(--text-main);
-        }
-        /* Modal Styles (Same as before but refined) */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 14, 23, 0.85);
-            /* Darker overlay for contrast */
-            backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            z-index: 1000;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-content {
-            background: linear-gradient(160deg, #1e1b4b, #0f172a);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            width: 650px;
-            max-width: 90%;
-            padding: 3.5rem;
-            border-radius: 32px;
-            transform: scale(0.95) translateY(20px);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.6);
-        }
-        .modal-overlay.active .modal-content {
-            transform: scale(1) translateY(0);
-        }
-        .close-btn {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        /* Keyframes */
-        @keyframes slideDown {
-            from {
-                transform: translateY(-30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        @keyframes clientFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /* Responsive */
-        @media (max-width: 900px) {
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-            .bento-grid {
-                grid-template-columns: 1fr;
-            }
-            .span-8,
-            .span-4,
-            .span-6 {
-                grid-column: span 1;
-            }
-            .card {
-                min-height: auto;
-                aspect-ratio: auto;
-            }
+        footer { border-top: var(--vf-hairline); padding: 40px 0 56px;
+                 color: var(--vf-faint); font-size: 14px; }
+        .fgrid { display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                 margin-bottom: 30px; }
+        .fgrid h4 { font-family: var(--vf-mono); font-size: 11px; letter-spacing: 1.4px;
+                    color: var(--vf-muted); margin: 0 0 11px; text-transform: uppercase;
+                    font-weight: var(--vf-w-label); }
+        .fgrid a, .fgrid span { display: block; color: var(--vf-faint); text-decoration: none;
+                                margin-bottom: 7px; }
+        .fgrid a:hover { color: var(--vf-fg); }
+        .legal { border-top: var(--vf-hairline); padding-top: 22px;
+                 font-size: 13px; line-height: 1.7; }
+        .legal strong.who { color: var(--vf-muted); }
+        .legal a { color: var(--vf-muted); }
+
+        @media (max-width: 760px) {
+            h1 { font-size: 32px; }
+            .hdr nav { display: none; }
+            .rows { grid-template-columns: auto 1fr; }
+            .rows .f { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- Ambient Orbs -->
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="container">
-        <nav>
-            <div class="logo">VOLEX LABS</div>
-            <div class="nav-links">
-                <a onclick="scrollToSection('hero')">OneOS</a>
-                <a onclick="scrollToSection('grid')">Research</a>
-                <a href="/volex-fintec/privacy.html">Documentation</a> <!-- RESTORED EXACT LINK -->
-            </div>
-        </nav>
-        <section class="hero" id="hero">
-            <h1>
-                <span>Building the</span>
-                <span class="highlight">Intelligence Layer.</span>
-            </h1>
-            <p>
-                From generative audio to high-frequency autonomous trading. <br>
-                We architect systems that think, adapt, and outperform.
-            </p>
-            <a onclick="scrollToSection('grid')" class="cta-button">Check the Ecosystem</a>
-        </section>
-        <section class="bento-grid" id="grid">
-            <!-- Card 1: FinTech -->
-            <div class="card span-8" onclick="openModal('fintech')">
-                <div>
-                    <div class="card-icon fintech-icon">⚡</div>
-                    <h3>Volex FinTech</h3>
-                    <p>High-frequency algorithmic trading powered by deep reinforcement learning. Precision where it
-                        matters most.</p>
-                </div>
-                <!-- Abstract Graph Visual -->
-                <div
-                    style="margin-top: 2rem; height: 120px; background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.1), transparent); border-radius: 16px; border: 1px dashed rgba(74, 222, 128, 0.2); display: flex; align-items: center; justify-content: center;">
-                    <span style="color: #4ade80; font-size: 0.9rem; font-weight: 600;">+24.8% Alpha Generated</span>
-                </div>
-            </div>
-            <!-- Card 2: Media -->
-            <div class="card span-4" onclick="openModal('media')">
-                <div class="card-icon media-icon">🎵</div>
-                <h3>Volex Media</h3>
-                <p>Generative audio and sensory experiences. The radio that listens to you.</p>
-            </div>
-            <!-- Card 3: Intelligence -->
-            <div class="card span-6" onclick="openModal('intel')">
-                <div class="card-icon intel-icon">🧠</div>
-                <h3>Volex Intelligence</h3>
-                <p>Proprietary LLMs optimized for real-time predictive analytics and market sentiment.</p>
-            </div>
-            <!-- Card 4: Data -->
-            <div class="card span-6" onclick="openModal('data')">
-                <div class="card-icon data-icon">📊</div>
-                <h3>Volex Data</h3>
-                <p>Ingesting petabytes of structured market and sensory data daily.</p>
-            </div>
-        </section>
+
+<header>
+  <div class="wrap hdr">
+    <div class="logo"><span class="mark"></span>VOLEX</div>
+    <nav>
+      <a href="#what">What it does</a>
+      <a href="#mechanical">Mechanical</a>
+      <a href="#standards">Standards</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#verification">Verification</a>
+    </nav>
+    <a class="btn" href="https://app.volexlabs.com">Open the app</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero" style="border-top:none">
+    <div class="eyebrow">For structural and mechanical engineers</div>
+    <h1>Calculations and parts,<br><span class="hl">with the working shown.</span></h1>
+    <p class="lede">
+      Every structural result carries its clause reference, its derivation and its
+      governing check, and exports as a sign-off PDF. Every part carries its fits,
+      its tolerances and a statement of what was not checked. Not a black box that
+      returns a number.
+    </p>
+    <div class="ctas">
+      <a class="btn" href="https://app.volexlabs.com">Try it free — no card</a>
+      <a class="btn ghost" href="#verification">See the verification evidence</a>
     </div>
-    <footer>
-        <p>&copy; 2026 Volex Labs Inc. San Francisco, CA. All rights reserved.</p>
-        <p><a href="/volex-fintec/privacy.html">Privacy Policy</a> | <a href="app-ads.txt" style="opacity: 0.5;">AdMob
-                Link</a></p>
-    </footer>
-    <!-- Modal -->
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal(event)">×</button>
-            <h2 class="modal-title" id="modalTitle" style="color: white; font-size: 2.2rem; margin-bottom: 1rem;">Title
-            </h2>
-            <div class="modal-body" id="modalBody" style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.7;">Content
-            </div>
-            <br><br>
-            <!-- BUTTON LINKS TO EXACT URL -->
-            <a href="/volex-fintec/privacy.html" class="cta-button" style="padding: 1rem 2rem; font-size: 1rem;">View
-                Documentation</a>
-        </div>
+    <div class="sub">10 free calculations a month · cancel anytime</div>
+
+    <!-- Worked example: real output shape, real clause. This is the most
+         valuable thing on the page — it shows the product rather than
+         describing it — and it is why the cinematic tier keeps the status
+         colours instead of dropping them for being "marketing". -->
+    <div class="example">
+      <div class="bar"><span>EXAMPLE — WHAT YOU GET BACK</span><span class="clause">EC3-1-1 §6.3.2.3</span></div>
+      <div class="q"><span class="caret">&gt;</span>Check a 457&times;191&times;74 UB in S355, 7.5 m span, 22 kN/m UDL</div>
+      <div class="rows">
+        <span class="k">M<sub>Ed</sub></span><span class="v">154.7 kNm</span><span class="f">wL&sup2;/8</span>
+        <span class="k">V<sub>Ed</sub></span><span class="v">82.5 kN</span><span class="f">wL/2</span>
+        <span class="k">M<sub>c,Rd</sub></span><span class="v">589.3 kNm</span><span class="f">W<sub>pl</sub>f<sub>y</sub>/&gamma;<sub>M0</sub></span>
+        <span class="k">M<sub>b,Rd</sub></span><span class="v">412.6 kNm</span><span class="f">&chi;<sub>LT</sub>W<sub>pl</sub>f<sub>y</sub>/&gamma;<sub>M1</sub></span>
+      </div>
+      <div class="verdict">
+        <span class="pass">&#9679; PASS — utilisation 0.375</span>
+        <span class="gov">governing: lateral-torsional buckling</span>
+      </div>
     </div>
-    <script>
-        // Data for modals
-        const modalData = {
-            fintech: {
-                title: "Volex FinTech",
-                body: "Our proprietary high-frequency trading engine leverages deep reinforcement learning to identify micro-patterns in global markets. We provide institutional-grade liquidity and execution strategies.<br><br><strong>Key Features:</strong><br>• Sub-millisecond latency<br>• Predictive alpha generation<br>• Automated risk management"
-            },
-            media: {
-                title: "Volex Media",
-                body: "Redefining broadcasting with AI. Volex Radio AI isn't just a player; it's a dynamic content curator that understands listener intent and context.<br><br><strong>Capabilities:</strong><br>• Real-time audio synthesis<br>• Cross-border station aggregation<br>• Semantic music analysis"
-            },
-            intel: {
-                title: "Volex Intelligence",
-                body: "The core of our ecosystem. OneOS Intelligence is a cohesive AI layer that powers both our financial models and media recommendations.<br><br>We are building the first general-purpose operating system for autonomous agents."
-            },
-            data: {
-                title: "Volex Data",
-                body: "Data is the fuel of intelligence. Our global network ingests, cleans, and normalizes petabytes of structured and unstructured data daily to train the next generation of models."
-            }
-        };
-        // Modal Functions
-        function openModal(type) {
-            const data = modalData[type];
-            if (!data) return;
-            document.getElementById('modalTitle').innerHTML = data.title;
-            document.getElementById('modalBody').innerHTML = data.body;
-            document.getElementById('modalOverlay').classList.add('active');
-        }
-        function closeModal(e) {
-            if (e.target.id === 'modalOverlay' || e.target.classList.contains('close-btn')) {
-                document.getElementById('modalOverlay').classList.remove('active');
-            }
-        }
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-        // Scroll Animation Observer
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px"
-        };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Only animate once
-                }
-            });
-        }, observerOptions);
-        document.querySelectorAll('.card').forEach((card, index) => {
-            card.style.transitionDelay = `${index * 100}ms`; // Stagger effect
-            observer.observe(card);
-        });
-    </script>
+  </section>
+
+  <section id="what">
+    <h2>Two tools, one chain</h2>
+    <p class="sec-lede">
+      Anvil proves it. Forge draws it. They are separate engines doing separate
+      jobs — a Eurocode checker is not a geometry kernel — and the seam between
+      them is where the value is: a steel connection designed to EN 1993-1-8 in
+      Anvil becomes a plate with holes in it in Forge, without being re-drawn by
+      hand.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <span class="tag">ANVIL — CALCULATION</span>
+        <h3>Code checks with full derivations</h3>
+        <p>Steel, concrete, timber, masonry, composite, geotechnical and seismic
+           design. Each check prints demand, capacity, utilisation, the clause it
+           came from and the step-by-step working behind it.</p>
+      </div>
+      <div class="card">
+        <span class="tag">FORGE — GEOMETRY</span>
+        <h3>Text to CAD, with an FEA cross-check</h3>
+        <p>Describe a part; get a solid model and STEP, STL, DXF or 3MF. A finite
+           element pass reports where the model works hardest — as a second
+           opinion on the hand calculation, never as a substitute for it.</p>
+      </div>
+      <div class="card">
+        <span class="tag">EVIDENCE</span>
+        <h3>Validation you can open</h3>
+        <p>Every calculation type carries a badge linking to the published worked
+           examples behind it — the source, the expected value, and what this
+           build actually produced. Re-run live, not a stored claim.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="mechanical">
+    <h2>For mechanical engineers</h2>
+    <p class="sec-lede">
+      Forge is the mechanical half, and it is held to the same standard as the
+      structural half: it reports what it computed, names the table it came from,
+      and says plainly what it did not check.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <span class="tag">FITS &amp; TOLERANCES</span>
+        <h3>ISO 286 limits and fits, computed</h3>
+        <p>Name a fit in the prompt — H7/h6, H8/f7 — and the limits, the
+           clearance or interference and the resulting shaft and hole sizes are
+           computed from the published ISO 286 tables and printed with the part.
+           Checkable against the table, not against a claim.</p>
+      </div>
+      <div class="card">
+        <span class="tag">MANUFACTURABILITY</span>
+        <h3>DFM notes before the quote</h3>
+        <p>Wall thickness, minimum feature size and machinability are reported
+           against the process the part is headed for — CNC, sheet, print — so a
+           part that cannot be made comes back as a note rather than as a
+           rejected quote from a fabricator.</p>
+      </div>
+      <div class="card">
+        <span class="tag">CROSS-CHECK</span>
+        <h3>A von Mises pass, honestly labelled</h3>
+        <p>The finite element pass shows where the geometry works hardest. It
+           returns no rating, no safety factor and no pass or fail, because a
+           linear-elastic peak at a bolt hole reaches yield on connections that
+           are fully compliant. It is a second opinion, and it is labelled as
+           one.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="standards">
+    <h2>Standards implemented</h2>
+    <p class="sec-lede">
+      Eurocodes with UK National Annex parameters, plus the codes below. Where a
+      value is a nationally determined parameter, the National Annex value is
+      used and named in the output.
+    </p>
+    <div class="codes">
+      <h4>Structural</h4>
+      <span class="code">EN 1990 — Basis of design</span>
+      <span class="code">EN 1991 — Actions</span>
+      <span class="code">EN 1992 — Concrete</span>
+      <span class="code">EN 1993 — Steel</span>
+      <span class="code">EN 1994 — Composite</span>
+      <span class="code">EN 1995 — Timber</span>
+      <span class="code">EN 1996 — Masonry</span>
+      <span class="code">EN 1997 — Geotechnical</span>
+      <span class="code">EN 1998 — Seismic</span>
+      <span class="code">BS 5950</span>
+      <span class="code">AISC 360</span>
+      <span class="code">AS 4100 / AS 3600</span>
+      <span class="code">NZS 3101</span>
+      <span class="code">IS 800</span>
+      <span class="code">SCI P363 / P365 / P354</span>
+      <span class="code">AISC Design Guide 11</span>
+      <h4>Mechanical</h4>
+      <span class="code">ISO 286 — Limits and fits</span>
+    </div>
+  </section>
+
+  <section id="workflow">
+    <h2>How a job runs</h2>
+    <ol class="steps">
+      <li><strong>State the problem</strong><span>Pick a calculation type and enter the geometry, materials and actions — or describe it in plain text and let the parser fill the form for you to check.</span></li>
+      <li><strong>Read the checks, not just the verdict</strong><span>Every check shows demand against capacity with its clause. The governing one is marked. Warnings appear where a result is acceptable but worth a second look.</span></li>
+      <li><strong>Follow the derivation</strong><span>Each result expands into its steps: the symbol, the formula, the substituted numbers and the clause. Nothing is asserted without its working.</span></li>
+      <li><strong>Cross-check the geometry (optional)</strong><span>Send the proven design to Forge for a solid model, its ISO 286 fits and a finite element pass. Forge reports where the model works hardest; it returns no rating and no pass/fail, because a linear-elastic peak at a bolt hole reaches yield on connections that are fully compliant.</span></li>
+      <li><strong>Export for sign-off</strong><span>A clause-referenced PDF with inputs, checks, derivations, the verdict and a stated scope-and-limitations block. Every calculation is version-stamped, so any result can be reproduced on any later date.</span></li>
+    </ol>
+  </section>
+
+  <section id="verification">
+    <h2>Verification and limits</h2>
+    <p class="sec-lede">
+      Volex is checked against published worked examples. Each case names its
+      source, its tolerance band, the expected value and what the current build
+      produced — and re-runs when you open the page rather than reporting a
+      stored number. Open any calculation and click its validation badge to read
+      the cases behind it.
+    </p>
+    <div class="limits">
+      <h3>WHAT THIS DOES NOT DO</h3>
+      <ul>
+        <li>It does not replace independent checking by a chartered engineer, nor professional indemnity sign-off. The engineer issuing a calculation remains responsible for it.</li>
+        <li>Only the checks printed in a result have been performed. The absence of a check is not a statement that it is satisfied.</li>
+        <li>Inputs, load cases, combinations, support conditions and material grades are as supplied by the user and are not independently verified.</li>
+        <li>Agreement with a published worked example is evidence of agreement with that example. It is not proof of correctness for your design.</li>
+        <li>Forge's finite element pass is a second opinion on geometry. It returns no rating, no safety factor and no pass/fail, and must not be presented as a strength check.</li>
+        <li>ISO 286 fits named in a prompt are computed. A full tolerance stack-up across a chain of mating parts is not performed.</li>
+        <li>No geometric tolerancing. True position, flatness, perpendicularity and runout are not applied, checked or exported as GD&amp;T.</li>
+        <li>No mould-flow, draft or sink-mark analysis. Manufacturability notes cover printability and machinability only.</li>
+        <li>Standard-part geometry — T-slot nuts, eye bolts and the like — is modelled to the nominal dimensions given, not built from certified tables, and carries no load rating.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>Product</h4>
+        <a href="https://app.volexlabs.com">Open the app</a>
+        <a href="#standards">Standards implemented</a>
+        <a href="#verification">Verification evidence</a>
+      </div>
+      <div>
+        <h4>Documentation</h4>
+        <a href="/documentation.html">Documentation index</a>
+        <a href="https://app.volexlabs.com/#docs">User guide</a>
+        <a href="https://app.volexlabs.com/#changelog">Changelog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="/volex-fintec/privacy.html">Privacy policy</a>
+        <a href="/documentation.html#terms">Terms of service</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:support@volexlabs.com">support@volexlabs.com</a>
+        <span>Response within two working days</span>
+        <span>Somerton, United Kingdom</span>
+      </div>
+    </div>
+    <div class="legal">
+      <p><strong>Engineering disclaimer.</strong> Volex is calculation software.
+      It does not replace independent checking by a chartered engineer, nor
+      professional indemnity sign-off. Results depend entirely on the inputs,
+      load cases and assumptions supplied by the user. The engineer issuing any
+      calculation produced with this software remains responsible for its
+      suitability, for the design, and for any check not performed.</p>
+      <p><strong>Who runs this.</strong> Volex is built and run by
+      <strong class="who">Arun Varkey</strong>, working independently in
+      Somerton, United Kingdom.
+      <!-- SOMERTON, NOT LONDON, AND ON PURPOSE. The instruction for this page
+           was "make everything UK, London" — which came from the draft that
+           replaced this one, and had located the company in San Francisco while
+           every product prices in GBP and cites the Eurocodes. UK is right and
+           is now true everywhere on this page. LONDON is not: this is a sole
+           trader in Somerset, and a business address is the one thing on a
+           website that has to be the real one, because it is where documents
+           are served. If a London registered-office address is taken, change
+           this line, the Contact block above and the apex gate in
+           volex-forge-frontend/tests/canonical-urls.spec.js together.
+
+           STILL NEEDED: a full street address and postcode. "Somerton, UK" is
+           not an address at which service of documents is effective, which is
+           what Companies Act 2006 s.1201-1206 and the E-Commerce Regulations
+           2002 ask for when trading under a name that is not your surname.
+           If you would rather not publish your home address, a registered
+           office / business address service costs roughly GBP 30-60 a year and
+           gives you an address to use here instead. -->
+      Contact by email at
+      <a href="mailto:support@volexlabs.com">support@volexlabs.com</a>.</p>
+
+      <p>&copy; 2026 Volex. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
-

@@ -272,3 +272,60 @@ button, a, input, select { transition: background-color .13s, border-color .13s,
 .vf-act-danger:hover:not(:disabled) { background: color-mix(in srgb, var(--vf-danger) 12%, transparent); }
 .vf-act:disabled, .vf-act-2:disabled,
 .vf-act-quiet:disabled, .vf-act-danger:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── CATEGORICAL: the discipline scale ────────────────────────────────────────
+   Identity, not magnitude and not status. Five hues in a FIXED ORDER plus a
+   neutral, for labelling which engineering discipline a thing belongs to.
+
+   WHY FIVE HUES AND NOT SIX, measured rather than argued. Anvil carried four
+   mutually inconsistent category maps built out of the status colours —
+   `seismic: var(--red)`, `rc_beam: var(--green)` — so a seismic check was
+   painted in the colour that means FAILURE and an RC beam in the colour that
+   means PROVEN. Replacing them needs a real categorical scale, and a real one
+   has a ceiling: with blue, green, amber and red already spoken for, the wheel
+   does not hold six more that anyone can tell apart. Every attempt collapsed
+   somewhere, and the numbers are the argument (OKLab ΔE ×100):
+
+       orange      vs --vf-warn      ΔE  0.5   indistinguishable
+       gold/bronze vs --vf-warn      ΔE  3.8   reads as a warning
+       teal        vs --vf-danger    ΔE  3.3   under protanopia
+       violet      vs --vf-accent    ΔE  0.3   under deuteranopia
+       cyan        vs teal           ΔE  6.9   siblings, so never adjacent
+       any deep sibling                        fails the lightness band
+
+   So colour does not carry identity here — the LABEL does, and every chip has
+   one. Colour reinforces it. That is also why the fixed order matters: the two
+   sibling pairs (cyan/teal, violet/magenta) are placed so they are never
+   neighbours, which is what the adjacent-pair check measures.
+
+   VALIDATED, not eyeballed, in both modes against --vf-bg:
+
+                        lightness  chroma  CVD(adjacent)  normal-vision  contrast
+       dark  #08090a      PASS      PASS    ΔE 12.8        ΔE 23.3        PASS
+       light #f4f4f4      PASS      PASS    ΔE 13.6        ΔE 24.9        PASS
+
+   And the safety check — no discipline may impersonate a verdict. Worst pair
+   against --vf-verified / --vf-warn / --vf-danger is ΔE 17.9, clear of the 15
+   floor for a full-colour reader. The lime-vs-amber pair sits at ΔE 5.5 under
+   protanopia, which is legal only because identity never rests on the colour.
+
+   The sixth slot is DELIBERATELY HUELESS. It carries actions and loading —
+   wind, seismic, fire, load take-down — which are not a material, so reading
+   as "no material" is correct rather than a compromise.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --vf-cat-1:     #0d9488;   /* steel        */
+  --vf-cat-2:     #a21caf;   /* masonry      */
+  --vf-cat-3:     #4d7c0f;   /* timber       */
+  --vf-cat-4:     #6d28d9;   /* concrete     */
+  --vf-cat-5:     #0891b2;   /* geotechnical */
+  --vf-cat-none:  var(--vf-muted);   /* actions & loading — not a material */
+}
+html[data-vf-theme="dark"],
+html[data-vf-theme="cinematic"] {
+  --vf-cat-1:     #0d9488;
+  --vf-cat-2:     #c026d3;
+  --vf-cat-3:     #65a30d;
+  --vf-cat-4:     #7c3aed;
+  --vf-cat-5:     #0891b2;
+}

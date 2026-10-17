@@ -90,6 +90,22 @@
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
+/* 600 as well, because both sites ASK for it. The landing site's old import
+ * requested wght@400;500;600 and Google served all three; shipping only two
+ * would have quietly handed weight 600 to the browser's synthetic emboldener,
+ * which smears a monospace face sideways. Forge's own import asked for 400;500
+ * only, so its weight-600 mono has been synthetic all along — this fixes that
+ * too, and the two sites now render the same face at the same weight. */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/ibm-plex-mono-latin-600-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
 @font-face {
   font-family: 'IBM Plex Mono';
   font-style: normal;

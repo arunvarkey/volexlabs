@@ -1,0 +1,102 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   A COPY. The original is volex-forge-frontend/public/fonts/fonts.css and it is
+   the only place to change anything below this header. The woff2 files beside
+   it are copies too, of volex-forge-frontend/public/fonts/*.woff2.
+
+   volexlabs.com is a separate deployment on the apex domain and cannot link the
+   app's stylesheets without making the company's front door depend on the app's
+   host being up — the same reason volex-theme.css is duplicated here. The theme
+   used to carry an @import for these three families; it no longer does, so
+   without this file and the <link> in each page's <head> the apex would render
+   in the fallback stack and look almost right.
+
+   It is gated: `the apex copy of the fonts is byte-identical to the original`
+   in volex-forge-frontend/tests/canonical-urls.spec.js compares everything
+   after this header against the original and fails on any drift.
+
+   Do not edit below. Edit the original, then copy it here.
+   ───────────────────────────────────────────────────────────────────────────── */
+/* Self-hosted fonts. Replaces @import url(https://fonts.googleapis.com/...).
+ *
+ * WHY THIS FILE EXISTS
+ *
+ * Every page loaded three families through an @import INSIDE a <style> block,
+ * with no preconnect anywhere on the site. That is the slowest route there is:
+ * the browser must download the HTML, parse the style block, discover the
+ * import, do DNS + TCP + TLS to fonts.googleapis.com, read the CSS it returns,
+ * discover fonts.gstatic.com, and do DNS + TCP + TLS a second time — two
+ * third-party handshakes, found late, blocking the first paint. Lighthouse put
+ * the home and studio pages at a 3.3s LCP on a machine with no network latency
+ * at all.
+ *
+ * AND IT WAS AN UNDECLARED TRANSFER. Loading a font from Google sends the
+ * visitor's IP address to Google on every page view. The privacy policy lists
+ * Anthropic, Stripe, Railway, Vercel, SendGrid and Plausible as the parties
+ * data reaches. Google was not among them, and in the EU and UK that omission
+ * is the problem rather than the request — a German court awarded damages over
+ * exactly this in 2022 (LG München I, 3 O 17493/20).
+ *
+ * Served from this origin, the files cost no extra connection, cache with
+ * everything else, and reach nobody.
+ *
+ * THE FAMILY NAMES MATTER. Fontsource ships these as "Inter Variable" and
+ * "Space Grotesk Variable". Every stylesheet on this site asks for 'Inter' and
+ * 'Space Grotesk', so they are declared under those names here. Declared under
+ * fontsource's names the pages would render in the fallback stack and look
+ * almost right, which is the failure mode worth avoiding — and the design
+ * system test cannot catch it, because getComputedStyle returns the stack that
+ * was asked for whether or not a font behind it ever loaded.
+ *
+ * font-display: swap so text is readable immediately in the fallback and
+ * reflows to the real face when it arrives. The alternative hides the text.
+ *
+ * Latin subsets only — the site is in English. Updating: the woff2 files come
+ * from the @fontsource packages in devDependencies; see scripts/copy-fonts.mjs.
+ */
+
+/* Inter — variable, 100-900. Body text. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/inter-latin-wght-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Space Grotesk — variable, 300-700. Headings and the wordmark. */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url('/fonts/space-grotesk-latin-wght-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* IBM Plex Mono — static 400 and 500. Dimensions, part numbers, evidence.
+ * Not variable upstream, so the two weights the site uses are shipped. */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}

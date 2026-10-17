@@ -17,6 +17,16 @@
          app's host would make the company's front door depend on the app being
          up. The copy is gated — canonical-urls.spec.js compares the two files
          and fails on any drift. Change the original, then copy it here. -->
+    <!-- Fonts, self-hosted. These must come BEFORE the theme: the theme used to
+         @import them from Google, which cost two third-party handshakes found
+         late and sent every visitor's IP to Google on every page view. The
+         preloads get the two text faces in flight before any CSS is parsed, so
+         the real face wins the first paint instead of the text reflowing. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/inter-latin-wght-normal.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/space-grotesk-latin-wght-normal.woff2">
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="stylesheet" href="/volex-theme.css">
 
     <!-- The cinematic tier is pinned on <html> rather than read from storage.

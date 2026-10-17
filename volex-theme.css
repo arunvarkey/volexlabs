@@ -26,7 +26,11 @@
      units light grey.
    · Hairline separators only (--vf-border) — no heavy borders.
    ═══════════════════════════════════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+/* Fonts are self-hosted and linked from each page's <head>, before this
+   file — see public/fonts/fonts.css for why. An @import here would be the
+   worst of all places for it: every page loads this stylesheet, so the
+   request to Google was discovered only after this file had been fetched
+   AND parsed, then needed two more handshakes of its own. */
 
 :root {
   /* ── Neutral base (light) ─────────────────────────────────────────────── */

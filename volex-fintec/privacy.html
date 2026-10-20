@@ -8,6 +8,12 @@
          it, so it has always rendered in the browser's default sans-serif. The
          face is self-hosted on this origin now, so the ask can be met with one
          link rather than a request to Google. -->
+    <!-- The three icon links every other page carries. Without them the
+         browser asks for /favicon.ico, which does not exist on either
+         deployment, so every visit to this page took a 404. -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <link rel="preload" as="font" type="font/woff2" crossorigin
           href="/fonts/inter-latin-wght-normal.woff2">
     <link rel="stylesheet" href="/fonts/fonts.css">
@@ -20,7 +26,11 @@
         h2 { border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
         h3 { color: var(--accent-color); font-size: 1.1rem; margin-top: 20px; }
         a { color: var(--accent-color); text-decoration: none; }
-        .footer { text-align: center; margin-top: 50px; color: #666; font-size: 0.8rem; border-top: 1px solid #222; padding-top: 20px; }
+        /* #808080, not #666. This page is deliberately outside the design system —
+           it is a legacy app-store privacy URL and its palette must not move — but
+           #666 on #0c0c0c is 3.41:1 and 0.8rem text needs 4.5:1. #808080 is 4.95:1
+           and is the smallest change that clears it. */
+        .footer { text-align: center; margin-top: 50px; color: #808080; font-size: 0.8rem; border-top: 1px solid #222; padding-top: 20px; }
     </style>
 </head>
 <body>
